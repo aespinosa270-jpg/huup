@@ -19,9 +19,16 @@ const techMono = JetBrains_Mono({
   display: "swap",
 });
 
+// ✅ METADATA ACTUALIZADA (FAVICON FORZADO)
 export const metadata = {
   title: "Huup Agency | Desarrollo de Software a Medida",
   description: "Agencia de desarrollo web full-stack. Creamos sitios web ultrarrápidos y escalables con Next.js.",
+  // 👇 Esto le dice al navegador explícitamente dónde buscar en la carpeta 'public'
+  icons: {
+    icon: '/icon.png',
+    shortcut: '/icon.png',
+    apple: '/icon.png',
+  },
 };
 
 export default function RootLayout({ children }) {

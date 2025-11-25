@@ -46,11 +46,11 @@ export default function Hero() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter mb-6 leading-[0.9]"
+              // 🔥 AQUÍ ESTÁ EL CAMBIO: Agregada la clase 'text-balance' al final
+              className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter mb-6 leading-[0.9] text-balance"
             >
               ARQUITECTURA <br />
               DIGITAL <br />
-              {/* CORRECCIÓN: Copy agresivo y técnico */}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-orange-500 drop-shadow-[0_0_35px_rgba(249,115,22,0.4)]">
                 DE ALTO RENDIMIENTO
               </span>
@@ -87,13 +87,9 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* === COLUMNA DERECHA: ECOSISTEMA 3D (Sin cambios, ya está perfecto) === */}
+          {/* === COLUMNA DERECHA: ECOSISTEMA 3D (Sin cambios) === */}
           <div className="relative h-[600px] w-full hidden lg:flex items-center justify-center perspective-1000">
-            
-            {/* Luz ambiental trasera (Naranja puro) */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-primary/10 rounded-full blur-[120px] animate-pulse" />
-
-            {/* CONTENEDOR 3D */}
             <motion.div
                className="relative w-[450px] h-[450px]"
                style={{ 
@@ -101,8 +97,6 @@ export default function Hero() {
                  transform: "rotateX(55deg) rotateZ(45deg) scale(0.85)", 
                }}
             >
-              
-              {/* CAPA BASE: Grid de suelo */}
               <div 
                 className="absolute inset-0 border border-brand-primary/20 bg-brand-primary/5 rounded-xl grid grid-cols-6 grid-rows-6"
                 style={{ transform: "translateZ(-80px)" }}
@@ -112,7 +106,6 @@ export default function Hero() {
                 ))}
               </div>
 
-              {/* --- ELEMENTO 1: SERVIDOR (BACKEND) --- */}
               <motion.div 
                 variants={floatAnimation(0)}
                 initial="initial"
@@ -131,7 +124,6 @@ export default function Hero() {
                 </div>
               </motion.div>
 
-              {/* --- ELEMENTO 2: EDITOR DE CÓDIGO --- */}
               <motion.div 
                 variants={floatAnimation(1)}
                 initial="initial"
@@ -154,7 +146,6 @@ export default function Hero() {
                 </div>
               </motion.div>
 
-              {/* --- ELEMENTO 3: INTERFAZ WEB (FRONTEND) --- */}
               <motion.div 
                 variants={floatAnimation(2)}
                 initial="initial"
@@ -195,7 +186,6 @@ export default function Hero() {
                 </div>
               </motion.div>
 
-              {/* --- ELEMENTO 4: MÓVIL FLOTANTE --- */}
               <motion.div 
                 variants={floatAnimation(1.5)}
                 initial="initial"
@@ -210,7 +200,6 @@ export default function Hero() {
                  <div className="h-8 w-full bg-brand-primary rounded" />
               </motion.div>
 
-              {/* --- ELEMENTO 5: BADGE VELOCIDAD --- */}
               <motion.div 
                  animate={{ z: [130, 150, 130], scale: [1, 1.1, 1] }}
                  transition={{ duration: 2, repeat: Infinity }}
@@ -220,7 +209,6 @@ export default function Hero() {
                 <Zap size={12} fill="currentColor" /> 100% SPEED
               </motion.div>
 
-              {/* CONEXIONES */}
               <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" style={{ transform: "translateZ(60px)" }}>
                 <line x1="100%" y1="20%" x2="50%" y2="50%" stroke="#f97316" strokeWidth="1" strokeDasharray="4 4" opacity="0.5" />
                 <line x1="80%" y1="80%" x2="110%" y2="50%" stroke="#f97316" strokeWidth="1" strokeDasharray="4 4" opacity="0.5" />

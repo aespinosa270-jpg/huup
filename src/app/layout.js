@@ -2,9 +2,9 @@
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
-
-// 1. IMPORTAMOS EL CHAT AQUÍ 👇
 import NexusChat from "@/components/nexus/NexusChat";
+// 👇 1. IMPORTAMOS EL CURSOR
+import Cursor from "@/components/layout/Cursor";
 
 // Fuentes
 const inter = Inter({
@@ -34,8 +34,13 @@ export default function RootLayout({ children }) {
         className={`${inter.variable} ${techMono.variable} font-sans bg-[#050505] text-white antialiased selection:bg-brand-primary/30 selection:text-white relative`}
       >
         
-        {/* 🔥 AQUÍ ESTÁ LA MAGIA: TEXTURA GLOBAL CINEMATOGRÁFICA */}
+        {/* 🔥 TEXTURA GLOBAL CINEMATOGRÁFICA */}
         <div className="bg-noise" />
+
+        {/* 🎯 CURSOR FRANCOTIRADOR (Solo visible en PC/Laptop) */}
+        <div className="hidden md:block">
+            <Cursor />
+        </div>
         
         <Navbar />
         

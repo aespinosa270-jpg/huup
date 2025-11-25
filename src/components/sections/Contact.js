@@ -1,11 +1,10 @@
 "use client";
 
-// ✅ CORRECCIÓN FINAL: React 19 Nativo
-import { useActionState } from "react"; 
+import { useActionState, useState, useEffect } from "react"; 
 import { useFormStatus } from "react-dom";
 import { sendContactEmail } from "@/app/actions";
 import { motion } from "framer-motion";
-import { AtSign, ArrowRight, Terminal, Radio, AlertCircle, CheckCircle2 } from "lucide-react";
+import { AtSign, ArrowRight, Terminal, Radio, AlertCircle, CheckCircle2, Wifi } from "lucide-react";
 
 // === LOGIC COMPONENTS ===
 
@@ -88,8 +87,30 @@ const ContactDataLink = ({ icon: Icon, label, value, href, delay }) => (
 // === MAIN COMPONENT ===
 
 export default function Contact() {
-  // ✅ CORRECCIÓN FINAL: Usamos useActionState (Standard React 19)
   const [state, formAction] = useActionState(sendContactEmail, initialState);
+  
+  // 🚀 LÓGICA DE LATENCIA REAL
+  const [latency, setLatency] = useState(null);
+
+  useEffect(() => {
+    const start = Date.now();
+    // Hacemos ping al favicon (archivo ligero) para medir respuesta real
+    fetch('/icon.png?ping=' + Date.now(), { method: 'HEAD', cache: 'no-store' })
+      .then(() => {
+        const end = Date.now();
+        const duration = end - start;
+        // Simulamos un pequeño "retraso técnico" de servidor si es localhost (0ms)
+        setLatency(Math.max(12, duration)); 
+      })
+      .catch(() => setLatency(null));
+  }, []);
+
+  const getLatencyColor = () => {
+    if (!latency) return "text-gray-500";
+    if (latency < 80) return "text-green-500";
+    if (latency < 200) return "text-yellow-500";
+    return "text-red-500";
+  };
 
   return (
     <section id="contacto" className="py-32 bg-brand-dark relative overflow-hidden">
@@ -155,7 +176,7 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* === COLUMNA DERECHA: Formulario CONECTADO === */}
+          {/* === COLUMNA DERECHA: Formulario CONECTADO CON PING === */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -167,12 +188,18 @@ export default function Contact() {
             
             <div className="bg-black/80 backdrop-blur-xl p-8 md:p-10 rounded-3xl border border-white/10 relative shadow-[0_0_50px_rgba(0,0,0,0.5)]">
               
+              {/* CABECERA CON PING REAL */}
               <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
                   <div className="flex gap-2 items-center">
-                      <div className="w-3 h-3 bg-brand-primary rounded-full animate-pulse" />
-                      <span className="text-xs font-mono text-brand-primary tracking-widest">LINK_ESTABLISHED</span>
+                      <div className={`w-3 h-3 rounded-full ${latency ? 'bg-brand-primary animate-pulse' : 'bg-red-500'}`} />
+                      <span className="text-xs font-mono text-brand-primary tracking-widest">
+                        {latency ? 'LINK_ESTABLISHED' : 'CONNECTING...'}
+                      </span>
                   </div>
-                  <div className="text-xs font-mono text-gray-500">LATENCY: 24ms</div>
+                  <div className={`text-xs font-mono flex items-center gap-2 ${getLatencyColor()}`}>
+                    <Wifi size={14} />
+                    {latency ? `LATENCY: ${latency}ms` : 'PINGING...'}
+                  </div>
               </div>
 
               <form action={formAction} className="space-y-6">

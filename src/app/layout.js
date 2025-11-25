@@ -21,7 +21,7 @@ const techMono = JetBrains_Mono({
 
 // ✅ METADATA ACTUALIZADA (FAVICON FORZADO)
 export const metadata = {
-  title: "Huup Agency | Desarrollo de Software a Medida",
+  title: "Huup | Desarrollo de Software a Medida",
   description: "Agencia de desarrollo web full-stack. Creamos sitios web ultrarrápidos y escalables con Next.js.",
   // 👇 Esto le dice al navegador explícitamente dónde buscar en la carpeta 'public'
   icons: {

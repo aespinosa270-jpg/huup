@@ -2,34 +2,253 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowRight, Terminal, Layout, Server, Zap, Smartphone, Code2, Database } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight, Terminal, Code2, Cpu, Zap, Layout, Smartphone, Database } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 
+// --- 1. MATRIX RAIN EFFECT (CANVAS OPTIMIZADO) ---
+const MatrixRain = () => {
+    const canvasRef = useRef(null);
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+        
+        // Configuración inicial
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+        
+        // Caracteres a usar (Mezcla de Katakana, Números y Operadores para look "Raw Data")
+        const chars = '0101010101ABCDEF<>/\\{};+*&%$#@'.split('');
+        const fontSize = 14;
+        const columns = width / fontSize;
+        
+        // Array para guardar la posición Y de cada columna
+        const drops = [];
+        for(let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        const draw = () => {
+            // Fondo semi-transparente para efecto de "estela"
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
+            ctx.fillRect(0, 0, width, height);
+            
+            ctx.fillStyle = '#f97316'; // Color Naranja de la Marca
+            ctx.font = `${fontSize}px monospace`;
+            
+            for(let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                
+                // Dibujar caracter
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                // Resetear gota al azar para que no sea uniforme
+                if(drops[i] * fontSize > height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                
+                drops[i]++;
+            }
+        };
+
+        // Loop de animación
+        const interval = setInterval(draw, 33); // ~30 FPS
+
+        // Handle Resize
+        const handleResize = () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        };
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    return (
+        <canvas 
+            ref={canvasRef} 
+            className="absolute inset-0 w-full h-full opacity-20 mix-blend-screen pointer-events-none"
+        />
+    );
+};
+
+// --- 2. TEXT SCRAMBLE EFFECT ---
+const ScrambleTitle = ({ text }) => {
+  const [display, setDisplay] = useState(text);
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
+
+  useEffect(() => {
+    let iteration = 0;
+    const interval = setInterval(() => {
+      setDisplay(
+        text
+          .split("")
+          .map((letter, index) => {
+            if (index < iteration) return text[index];
+            return chars[Math.floor(Math.random() * chars.length)];
+          })
+          .join("")
+      );
+      if (iteration >= text.length) clearInterval(interval);
+      iteration += 1 / 3;
+    }, 50);
+    return () => clearInterval(interval);
+  }, [text]);
+
+  return <span>{display}</span>;
+};
+
+// --- 3. ANIMACIÓN DE FLOTACIÓN ---
 const floatAnimation = (delay) => ({
-  initial: { y: 0 },
-  animate: {
-    y: [-15, 15, -15],
-    transition: {
-      duration: 6,
-      delay: delay,
-      repeat: Infinity,
-      ease: "easeInOut",
-    },
-  },
+    initial: { y: 0 },
+    animate: {
+        y: [-15, 15, -15],
+        transition: {
+            duration: 6,
+            delay: delay,
+            repeat: Infinity,
+            ease: "easeInOut"
+        }
+    }
 });
 
+// --- 4. HUUP ISOMETRIC ECOSYSTEM ---
+const HuupIsometricEcosystem = () => {
+    return (
+        <div className="relative w-[600px] h-[600px] flex items-center justify-center perspective-[2000px]">
+            
+            {/* GLOW ATMOSFÉRICO */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-brand-primary/20 blur-[100px] rounded-full animate-pulse" />
+
+            {/* CONTENEDOR 3D */}
+            <motion.div 
+                className="relative w-[450px] h-[400px] preserve-3d"
+                style={{ 
+                    transformStyle: "preserve-3d",
+                    transform: "rotateX(55deg) rotateZ(45deg) scale(0.9)",
+                }}
+            >
+                {/* NIVEL 0: SOMBRA */}
+                <div className="absolute inset-0 bg-black blur-xl opacity-50 transform translate-z-[-50px] scale-90" />
+
+                {/* NIVEL 1: DESKTOP UI */}
+                <div className="absolute inset-0 bg-[#050505]/90 border border-white/10 rounded-xl backdrop-blur-sm shadow-2xl overflow-hidden flex flex-col group hover:border-brand-primary/50 transition-colors duration-500">
+                    <div className="h-8 border-b border-white/10 flex items-center px-4 gap-2 bg-white/5">
+                        <div className="w-2 h-2 rounded-full bg-red-500/50" />
+                        <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
+                        <div className="w-2 h-2 rounded-full bg-green-500/50" />
+                        <div className="ml-auto w-20 h-1 bg-white/10 rounded-full" />
+                    </div>
+                    <div className="p-6 flex flex-col gap-4 flex-1 relative">
+                        {/* Scanline Laser */}
+                        <motion.div 
+                            animate={{ top: ["-20%", "120%"] }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "linear", delay: 1 }}
+                            className="absolute left-0 w-full h-[20%] bg-gradient-to-b from-transparent via-brand-primary/10 to-transparent z-10 pointer-events-none"
+                        />
+                        <div className="flex gap-4 h-32">
+                            <div className="flex-1 bg-white/5 rounded border border-white/5 relative overflow-hidden">
+                                <div className="absolute inset-0 flex items-center justify-center text-white/10 text-4xl font-black select-none">HUUP</div>
+                            </div>
+                            <div className="w-1/3 flex flex-col gap-2">
+                                <div className="h-2 w-full bg-brand-primary/20 rounded" />
+                                <div className="h-2 w-2/3 bg-brand-primary/10 rounded" />
+                                <div className="h-8 w-full bg-brand-primary rounded mt-auto flex items-center justify-center text-[10px] font-bold text-black">DEPLOY</div>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 mt-auto h-20">
+                            {[1,2,3].map(i => (
+                                <div key={i} className="bg-white/5 rounded border border-white/5" />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* NIVEL 2: CÓDIGO FLOTANTE */}
+                <motion.div 
+                    variants={floatAnimation(0)}
+                    initial="initial"
+                    animate="animate"
+                    className="absolute -right-12 -top-12 w-48 h-32 bg-[#0a0a0a] border border-brand-primary/30 rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-3 flex flex-col gap-2 transform translate-z-[40px]"
+                    style={{ transform: "translateZ(60px)" }}
+                >
+                    <div className="flex items-center justify-between text-[10px] text-gray-500 border-b border-white/10 pb-1 mb-1 font-mono">
+                        <span>server.js</span>
+                        <Code2 size={10} />
+                    </div>
+                    <div className="space-y-1">
+                        <div className="h-1 w-3/4 bg-green-500/50 rounded" />
+                        <div className="h-1 w-1/2 bg-purple-500/50 rounded pl-2" />
+                        <div className="h-1 w-2/3 bg-blue-500/50 rounded pl-2" />
+                        <div className="h-1 w-1/4 bg-yellow-500/50 rounded" />
+                    </div>
+                    <div className="mt-auto text-[8px] font-mono text-green-400 animate-pulse">&gt; Compiled successfully</div>
+                </motion.div>
+
+                {/* NIVEL 3: MÓVIL */}
+                <motion.div 
+                    variants={floatAnimation(1.5)}
+                    initial="initial"
+                    animate="animate"
+                    className="absolute -left-8 bottom-12 w-20 h-40 bg-[#0a0a0a] border-2 border-white/20 rounded-[1rem] shadow-[0_0_40px_rgba(249,115,22,0.3)] p-1 flex flex-col transform translate-z-[80px]"
+                    style={{ transform: "translateZ(100px)" }}
+                >
+                    <div className="w-8 h-1 bg-white/20 rounded-full mx-auto mb-2 mt-1" />
+                    <div className="flex-1 bg-brand-primary/10 rounded border border-brand-primary/20 flex flex-col items-center justify-center gap-2">
+                        <Smartphone size={16} className="text-brand-primary" />
+                        <div className="h-1 w-8 bg-brand-primary/50 rounded" />
+                    </div>
+                    <div className="h-6 w-full bg-brand-primary mt-1 rounded-b-[0.8rem]" />
+                </motion.div>
+
+                {/* NIVEL 4: BADGE VELOCIDAD */}
+                <motion.div 
+                    animate={{ z: [120, 140, 120], scale: [1, 1.05, 1] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute -top-20 left-10 px-4 py-1.5 bg-brand-primary text-black text-[10px] font-black uppercase tracking-wider rounded-full shadow-[0_0_20px_#f97316] flex items-center gap-1 transform translate-z-[120px]"
+                    style={{ transform: "translateZ(150px) rotateX(-20deg)" }}
+                >
+                    <Zap size={10} fill="currentColor" /> 100% Speed
+                </motion.div>
+
+                {/* LINEAS CONECTORAS */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" style={{ transform: "translateZ(40px)" }}>
+                    <line x1="100%" y1="20%" x2="80%" y2="50%" stroke="#f97316" strokeWidth="1" strokeDasharray="4 4" opacity="0.4" />
+                    <line x1="0%" y1="80%" x2="30%" y2="50%" stroke="#f97316" strokeWidth="1" strokeDasharray="4 4" opacity="0.4" />
+                    <motion.circle r="2" fill="#f97316" animate={{ cx: ["100%", "80%"], cy: ["20%", "50%"] }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} />
+                </svg>
+
+            </motion.div>
+        </div>
+    );
+};
+
 export default function Hero() {
+  const { scrollY } = useScroll();
+  const yBg = useTransform(scrollY, [0, 500], [0, 200]);
+
   return (
-    <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden min-h-screen flex items-center bg-[#050505] perspective-[2000px]">
+    <section className="relative min-h-screen flex items-center bg-[#050505] overflow-hidden pt-20">
       
-      {/* 1. FONDO (Grid Técnico Ultra-Sutil) */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-        <div className="absolute inset-0 bg-[#050505] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,transparent_20%,#050505_100%)]"></div>
+      {/* 0. MATRIX CODE RAIN (FONDO BASE) */}
+      <div className="absolute inset-0 z-0">
+          <MatrixRain />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      {/* 1. FONDO GRID (PERSPECTIVA SOBRE LA LLUVIA) */}
+      <motion.div style={{ y: yBg }} className="absolute inset-0 z-0 pointer-events-none perspective-1000">
+         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:60px_60px] [transform:rotateX(60deg)scale(2)] origin-top opacity-30"></div>
+         <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent"></div>
+      </motion.div>
+
+      {/* Spotlights */}
+      <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-brand-primary/5 blur-[150px] rounded-full pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           
           {/* === COLUMNA IZQUIERDA: Texto === */}
           <div className="text-left relative z-20">
@@ -37,32 +256,34 @@ export default function Hero() {
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded border border-brand-primary/30 bg-brand-primary/10 text-brand-primary text-xs font-mono font-bold uppercase tracking-widest mb-6"
+              className="inline-flex items-center gap-2 px-3 py-1 rounded border border-brand-primary/30 bg-brand-primary/10 text-brand-primary text-xs font-mono font-bold uppercase tracking-widest mb-6 backdrop-blur-md"
             >
-              <Terminal size={12} /> Ingeniería de Software
+              <Terminal size={12} /> System.Root // v2.0
             </motion.div>
 
-            <motion.h1 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              // 🔥 AQUÍ ESTÁ EL CAMBIO: Agregada la clase 'text-balance' al final
-              className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter mb-6 leading-[0.9] text-balance"
-            >
-              ARQUITECTURA <br />
-              DIGITAL <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-orange-500 drop-shadow-[0_0_35px_rgba(249,115,22,0.4)]">
-                DE ALTO RENDIMIENTO
-              </span>
-            </motion.h1>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter mb-6 leading-[0.9]">
+              <div className="flex flex-col">
+                 <motion.span
+                    initial={{ opacity: 0, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, filter: "blur(0px)" }}
+                    transition={{ duration: 0.8 }}
+                 >
+                    INGENIERÍA
+                 </motion.span>
+                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-white to-brand-primary bg-300% animate-gradient">
+                    <ScrambleTitle text="DIGITAL" />
+                 </span>
+              </div>
+            </h1>
 
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg md:text-2xl text-gray-400 max-w-xl mb-10 font-light border-l-2 border-brand-primary/30 pl-6"
+              className="text-lg md:text-xl text-gray-400 max-w-xl mb-10 font-light border-l-2 border-brand-primary/30 pl-6 leading-relaxed"
             >
-              Trascendemos el código convencional. Creamos ecosistemas digitales escalables y experiencias inmersivas, diseñadas hoy para dominar el internet de mañana.
+              Arquitectura de software de alto rendimiento. Sin plantillas. 
+              Creamos ecosistemas escalables diseñados para dominar el mercado.
             </motion.p>
 
             <motion.div 
@@ -73,152 +294,49 @@ export default function Hero() {
             >
               <Link 
                 href="#contacto" 
-                className="group relative px-8 py-4 bg-brand-primary text-white font-bold text-lg rounded hover:bg-brand-secondary transition-all shadow-[0_0_30px_rgba(249,115,22,0.3)] hover:shadow-[0_0_50px_rgba(249,115,22,0.5)]"
+                className="group relative px-8 py-4 bg-brand-primary text-black font-bold text-sm uppercase tracking-widest rounded-sm hover:shadow-[0_0_40px_rgba(249,115,22,0.4)] transition-all overflow-hidden"
               >
-                Iniciar Proyecto <ArrowRight size={20} className="inline ml-2 group-hover:translate-x-1 transition-transform" />
+                <div className="absolute inset-0 bg-white/40 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                <span className="relative z-10 flex items-center gap-2">
+                    INICIALIZAR <ArrowRight size={16} />
+                </span>
               </Link>
               
               <Link 
                 href="#portafolio" 
-                className="px-8 py-4 bg-white/5 border border-white/10 text-white font-bold text-lg rounded hover:bg-white/10 hover:border-white/30 transition-all backdrop-blur-md"
+                className="px-8 py-4 bg-transparent border border-white/20 text-white font-bold text-sm uppercase tracking-widest rounded-sm hover:bg-white/5 hover:border-white transition-all flex items-center gap-2 backdrop-blur-sm"
               >
-                Ver Casos de Éxito
+                <Code2 size={16} className="text-gray-500" /> SISTEMAS
               </Link>
             </motion.div>
-          </div>
 
-          {/* === COLUMNA DERECHA: ECOSISTEMA 3D (Sin cambios) === */}
-          <div className="relative h-[600px] w-full hidden lg:flex items-center justify-center perspective-1000">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-primary/10 rounded-full blur-[120px] animate-pulse" />
-            <motion.div
-               className="relative w-[450px] h-[450px]"
-               style={{ 
-                 transformStyle: "preserve-3d", 
-                 transform: "rotateX(55deg) rotateZ(45deg) scale(0.85)", 
-               }}
+            {/* Stats Rápidos */}
+            <motion.div 
+                 initial={{ opacity: 0 }}
+                 animate={{ opacity: 1 }}
+                 transition={{ delay: 1 }}
+                 className="mt-12 flex gap-8 border-t border-white/5 pt-6"
             >
-              <div 
-                className="absolute inset-0 border border-brand-primary/20 bg-brand-primary/5 rounded-xl grid grid-cols-6 grid-rows-6"
-                style={{ transform: "translateZ(-80px)" }}
-              >
-                {[...Array(36)].map((_, i) => (
-                    <div key={i} className="border border-brand-primary/5" />
-                ))}
-              </div>
-
-              <motion.div 
-                variants={floatAnimation(0)}
-                initial="initial"
-                animate="animate"
-                className="absolute top-0 right-0 w-48 h-64 bg-[#0a0a0a] border-2 border-brand-primary/30 rounded-lg shadow-2xl flex flex-col p-4 gap-3"
-                style={{ transform: "translateZ(0px) translate(20px, -20px)" }}
-              >
-                {[1, 2, 3, 4].map(i => (
-                    <div key={i} className="h-2 w-full bg-white/5 rounded-full flex gap-1 overflow-hidden">
-                        <div className="w-10 h-full bg-brand-primary/50 animate-pulse" />
+                <div>
+                    <div className="text-2xl font-bold text-white font-mono flex items-center gap-1">
+                        +50 <span className="text-brand-primary text-sm">PROYECTOS</span>
                     </div>
-                ))}
-                <div className="mt-auto flex items-center gap-2 text-brand-primary/50">
-                    <Database size={20} />
-                    <span className="text-[10px] font-mono">DATA_CENTER</span>
+                    <div className="text-[10px] text-gray-500 uppercase">Desplegados</div>
                 </div>
-              </motion.div>
-
-              <motion.div 
-                variants={floatAnimation(1)}
-                initial="initial"
-                animate="animate"
-                className="absolute top-10 right-20 w-64 h-48 bg-[#0a0a0a]/90 border border-white/20 rounded-lg shadow-xl backdrop-blur-sm flex flex-col p-4 gap-2"
-                style={{ transform: "translateZ(40px)" }}
-              >
-                <div className="flex justify-between border-b border-white/10 pb-2 mb-1">
-                   <div className="flex gap-1">
-                      <div className="w-2 h-2 rounded-full bg-white/20" />
-                      <div className="w-2 h-2 rounded-full bg-white/20" />
-                   </div>
-                   <Code2 size={12} className="text-gray-500" />
-                </div>
-                <div className="space-y-2 opacity-60">
-                    <div className="h-2 w-3/4 bg-brand-primary/40 rounded" />
-                    <div className="h-2 w-1/2 bg-white/40 rounded" />
-                    <div className="h-2 w-full bg-white/20 rounded" />
-                    <div className="h-2 w-2/3 bg-brand-primary/20 rounded" />
-                </div>
-              </motion.div>
-
-              <motion.div 
-                variants={floatAnimation(2)}
-                initial="initial"
-                animate="animate"
-                className="absolute inset-0 bg-[#0a0a0a]/95 border-2 border-brand-primary rounded-xl shadow-[0_0_60px_rgba(249,115,22,0.2)] p-5 flex flex-col gap-4"
-                style={{ transform: "translateZ(80px)" }}
-              >
-                <div className="flex justify-between items-center">
-                    <div className="h-8 w-8 border border-brand-primary rounded flex items-center justify-center bg-brand-primary/10">
-                        <Layout size={16} className="text-brand-primary" />
+                <div>
+                    <div className="text-2xl font-bold text-white font-mono flex items-center gap-1">
+                        99.9% <span className="text-green-500 text-sm">UPTIME</span>
                     </div>
-                    <div className="h-2 w-32 bg-brand-primary/20 rounded" />
+                    <div className="text-[10px] text-gray-500 uppercase">Garantizado</div>
                 </div>
-                
-                <div className="flex gap-4 h-32">
-                    <div className="flex-1 border border-dashed border-brand-primary/30 rounded bg-brand-primary/5 flex items-center justify-center relative overflow-hidden">
-                        <motion.div 
-                           animate={{ top: ["-100%", "200%"] }}
-                           transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                           className="absolute w-full h-[20%] bg-brand-primary/20 blur-md"
-                        />
-                        <div className="text-brand-primary text-xs tracking-widest">IMG</div>
-                    </div>
-                    <div className="flex-1 space-y-2 pt-4">
-                        <div className="h-4 w-full bg-brand-primary/40 rounded" />
-                        <div className="h-2 w-full bg-brand-primary/20 rounded" />
-                        <div className="h-2 w-2/3 bg-brand-primary/20 rounded" />
-                        <div className="mt-4 h-8 w-24 border border-brand-primary rounded bg-brand-primary/10 flex items-center justify-center">
-                            <div className="h-1 w-10 bg-brand-primary" />
-                        </div>
-                    </div>
-                </div>
-                
-                <div className="grid grid-cols-3 gap-2 mt-2">
-                    <div className="h-16 border border-brand-primary/20 rounded bg-white/5" />
-                    <div className="h-16 border border-brand-primary/20 rounded bg-white/5" />
-                    <div className="h-16 border border-brand-primary/20 rounded bg-white/5" />
-                </div>
-              </motion.div>
-
-              <motion.div 
-                variants={floatAnimation(1.5)}
-                initial="initial"
-                animate="animate"
-                className="absolute -right-12 top-1/2 w-24 h-48 bg-[#0a0a0a] border-2 border-white/20 rounded-2xl p-2 shadow-2xl flex flex-col gap-2"
-                style={{ transform: "translateZ(120px) translateY(-50%)" }}
-              >
-                 <div className="w-full h-1 bg-white/20 rounded-full mx-auto mb-2" />
-                 <div className="flex-1 bg-white/5 rounded border border-dashed border-white/10 flex items-center justify-center">
-                    <Smartphone size={20} className="text-brand-primary" />
-                 </div>
-                 <div className="h-8 w-full bg-brand-primary rounded" />
-              </motion.div>
-
-              <motion.div 
-                 animate={{ z: [130, 150, 130], scale: [1, 1.1, 1] }}
-                 transition={{ duration: 2, repeat: Infinity }}
-                 className="absolute -top-6 left-10 px-4 py-2 bg-brand-primary text-white text-xs font-bold rounded-full shadow-[0_0_20px_#f97316] flex items-center gap-1"
-                 style={{ transform: "translateZ(140px)" }}
-              >
-                <Zap size={12} fill="currentColor" /> 100% SPEED
-              </motion.div>
-
-              <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" style={{ transform: "translateZ(60px)" }}>
-                <line x1="100%" y1="20%" x2="50%" y2="50%" stroke="#f97316" strokeWidth="1" strokeDasharray="4 4" opacity="0.5" />
-                <line x1="80%" y1="80%" x2="110%" y2="50%" stroke="#f97316" strokeWidth="1" strokeDasharray="4 4" opacity="0.5" />
-                <motion.circle r="3" fill="#f97316" animate={{ cx: ["100%", "50%"], cy: ["20%", "50%"] }} transition={{ duration: 3, repeat: Infinity, ease: "linear" }} />
-              </svg>
-
             </motion.div>
           </div>
 
-        </div>
+          {/* === COLUMNA DERECHA: ECOSYSTEM UI === */}
+          <div className="relative w-full h-full hidden lg:flex items-center justify-center pointer-events-none">
+             <HuupIsometricEcosystem />
+          </div>
+
       </div>
     </section>
   );

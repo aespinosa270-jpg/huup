@@ -2,11 +2,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ExternalLink, ArrowRight, Terminal, Layers, Activity, ShoppingCart, Image as ImageIcon } from "lucide-react";
+import { ExternalLink, ArrowRight, Terminal, Layers, Activity, ShoppingCart, Image as ImageIcon, Code2 } from "lucide-react";
 
-// --- COMPONENTES VISUALES (BLUEPRINTS ANIMADOS) ---
+// --- COMPONENTES VISUALES (BLUEPRINTS ANIMADOS COMPLETOS) ---
 
-// 1. FINTECH: Gráfico de datos en tiempo real
+// 1. FINTECH: Gráfico de datos en tiempo real (Full Code)
 const FintechBlueprint = () => (
   <div className="w-full h-full bg-black/50 relative overflow-hidden flex flex-col justify-between p-4">
     {/* Grid de fondo */}
@@ -52,7 +52,7 @@ const FintechBlueprint = () => (
   </div>
 );
 
-// 2. REAL ESTATE: Estructura de Parallax/Imagen inmersiva
+// 2. REAL ESTATE: Estructura de Parallax (Full Code)
 const RealEstateBlueprint = () => (
     <div className="w-full h-full bg-black/50 relative overflow-hidden p-4 flex flex-col gap-3">
       {/* Header minimalista */}
@@ -68,9 +68,9 @@ const RealEstateBlueprint = () => (
           </div>
           {/* La "imagen" que se mueve lento al fondo */}
           <motion.div 
-             animate={{ y: ["0%", "-20%"] }}
-             transition={{ duration: 8, repeat: Infinity, repeatType: "mirror", ease: "linear" }}
-             className="absolute -inset-x-4 -inset-y-8 bg-[linear-gradient(45deg,transparent_45%,rgba(255,255,255,0.05)_50%,transparent_55%)] bg-[size:20px_20px] opacity-50"
+              animate={{ y: ["0%", "-20%"] }}
+              transition={{ duration: 8, repeat: Infinity, repeatType: "mirror", ease: "linear" }}
+              className="absolute -inset-x-4 -inset-y-8 bg-[linear-gradient(45deg,transparent_45%,rgba(255,255,255,0.05)_50%,transparent_55%)] bg-[size:20px_20px] opacity-50"
           >
              <div className="w-full h-full bg-white/5" />
           </motion.div>
@@ -81,9 +81,9 @@ const RealEstateBlueprint = () => (
           </div>
       </div>
     </div>
-  );
+);
 
-// 3. E-COMMERCE: Flujo de compra (Grid -> Carrito)
+// 3. E-COMMERCE: Flujo de compra (Full Code)
 const EcommerceBlueprint = () => (
     <div className="w-full h-full bg-black/50 relative overflow-hidden p-4 flex items-center gap-4">
       
@@ -121,7 +121,6 @@ const EcommerceBlueprint = () => (
 
     </div>
 );
-
 
 const projects = [
   {
@@ -161,20 +160,22 @@ export default function Portfolio() {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
-        {/* ENCABEZADO TÉCNICO */}
+        {/* ENCABEZADO TÉCNICO (Español MX - Ingeniería) */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
+            {/* Tag técnico puede quedarse en inglés para mantener el "Code Aesthetic" o cambiarse a System.Logs */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded border border-brand-primary/30 bg-brand-primary/10 text-brand-primary text-xs font-mono font-bold uppercase tracking-widest mb-6">
-                <Terminal size={12} /> System.Portfolio
+                <Terminal size={12} /> System.Logs
             </div>
+            {/* H2 Reemplazado: De "Deployed Architectures" a "Sistemas en Producción" */}
             <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight">
-              Casos de <br/>
+              Sistemas en <br/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-orange-400">
-                Éxito
+                Producción
               </span>
             </h2>
           </motion.div>
@@ -185,7 +186,7 @@ export default function Portfolio() {
             viewport={{ once: true }}
             className="hidden md:flex items-center gap-2 text-gray-400 font-mono text-sm hover:text-brand-primary transition-colors border-b border-white/10 hover:border-brand-primary pb-1 group"
           >
-            Ver repositorio completo <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+             <Code2 size={16} /> Ver Bitácora de Sistemas <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </motion.button>
         </div>
 
@@ -201,17 +202,17 @@ export default function Portfolio() {
               className="group relative rounded-2xl bg-black border border-white/10 overflow-hidden hover:border-brand-primary transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(249,115,22,0.2)]"
             >
               
-              {/* 1. BLUEPRINT COVER (El diagrama técnico animado) */}
+              {/* 1. BLUEPRINT COVER (Visual) */}
               <div className="h-64 w-full relative border-b border-white/10 group-hover:border-brand-primary/50 transition-colors bg-[url('/noise.svg')] bg-opacity-5">
                 {/* Capa de opacidad que se aclara al hover */}
                 <div className="absolute inset-0 opacity-60 group-hover:opacity-100 transition-opacity duration-500">
                     {project.blueprint}
                 </div>
 
-                {/* Botón flotante 'Ver Proyecto' */}
+                {/* Botón flotante 'Ver Proyecto' (Traducido) */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 pointer-events-none">
                   <div className="flex items-center gap-2 bg-brand-primary text-white font-bold px-6 py-3 rounded-full shadow-lg transform scale-90 group-hover:scale-100 transition-transform">
-                    Explorar Caso <ExternalLink size={18} />
+                    Auditar Sistema <ExternalLink size={18} />
                   </div>
                 </div>
               </div>
@@ -232,7 +233,7 @@ export default function Portfolio() {
                   {project.desc}
                 </p>
 
-                {/* Tags estilo Terminal Monospace */}
+                {/* Stack Tags */}
                 <div className="flex flex-wrap gap-2">
                   {project.stack.map((tech, i) => (
                     <span key={i} className="px-2 py-1 rounded bg-white/5 border border-white/10 text-[11px] font-mono text-gray-400 uppercase hover:border-brand-primary/50 hover:text-white transition-colors cursor-default">
@@ -248,7 +249,7 @@ export default function Portfolio() {
         {/* Botón móvil */}
         <div className="mt-12 md:hidden text-center">
             <button className="w-full py-4 rounded-xl border border-white/10 bg-white/5 text-white font-bold hover:bg-brand-primary hover:border-brand-primary transition-all font-mono uppercase text-sm">
-                Ver Repositorio
+                Ver Repositorio Completo
             </button>
         </div>
 

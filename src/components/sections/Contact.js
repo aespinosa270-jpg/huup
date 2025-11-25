@@ -1,10 +1,11 @@
+// src/components/sections/Contact.js
 "use client";
 
 import { useActionState, useState, useEffect } from "react"; 
 import { useFormStatus } from "react-dom";
 import { sendContactEmail } from "@/app/actions";
-import { motion } from "framer-motion";
-import { AtSign, ArrowRight, Terminal, Radio, AlertCircle, CheckCircle2, Wifi } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { AtSign, ArrowRight, Terminal, Radio, AlertCircle, Wifi, Cpu, ShieldCheck } from "lucide-react";
 
 // === LOGIC COMPONENTS ===
 
@@ -94,12 +95,10 @@ export default function Contact() {
 
   useEffect(() => {
     const start = Date.now();
-    // Hacemos ping al favicon (archivo ligero) para medir respuesta real
     fetch('/icon.png?ping=' + Date.now(), { method: 'HEAD', cache: 'no-store' })
       .then(() => {
         const end = Date.now();
         const duration = end - start;
-        // Simulamos un pequeño "retraso técnico" de servidor si es localhost (0ms)
         setLatency(Math.max(12, duration)); 
       })
       .catch(() => setLatency(null));
@@ -162,8 +161,8 @@ export default function Contact() {
               <ContactDataLink 
                 icon={AtSign} 
                 label="EMAIL" 
-                value="hola@huup.agency" 
-                href="mailto:hola@huup.agency" 
+                value="hola@huup.com.mx" // FIX: huup.agency -> huup.com.mx
+                href="mailto:hola@huup.com.mx" 
                 delay={0.3}
               />
               <ContactDataLink 
@@ -176,7 +175,7 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* === COLUMNA DERECHA: Formulario CONECTADO CON PING === */}
+          {/* === COLUMNA DERECHA: Formulario o Terminal de Éxito === */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -186,7 +185,7 @@ export default function Contact() {
           >
             <div className="absolute -inset-[1px] bg-gradient-to-br from-brand-primary via-transparent to-brand-secondary rounded-3xl opacity-50 blur-sm pointer-events-none" />
             
-            <div className="bg-black/80 backdrop-blur-xl p-8 md:p-10 rounded-3xl border border-white/10 relative shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+            <div className="bg-black/80 backdrop-blur-xl p-8 md:p-10 rounded-3xl border border-white/10 relative shadow-[0_0_50px_rgba(0,0,0,0.5)] min-h-[500px] flex flex-col">
               
               {/* CABECERA CON PING REAL */}
               <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
@@ -202,81 +201,95 @@ export default function Contact() {
                   </div>
               </div>
 
-              <form action={formAction} className="space-y-6">
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* NOMBRE */}
-                  <div className="space-y-2">
-                    <label htmlFor="name" className="text-[10px] font-mono font-bold text-brand-primary uppercase ml-1 tracking-wider"> // Tu Nombre</label>
-                    <input 
-                      type="text" 
-                      id="name" 
-                      name="name" 
-                      placeholder="Ej. Juan Pérez" 
-                      className="w-full bg-black border border-white/20 rounded-none px-4 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all font-mono text-sm" 
-                    />
-                  </div>
+              <AnimatePresence mode="wait">
+                {state.success ? (
+                    /* === ESTADO DE ÉXITO: TERMINAL STYLE (Directiva #HUUP-001) === */
+                    <motion.div 
+                        key="success-terminal"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="flex-1 flex flex-col justify-center"
+                    >
+                        <div className="bg-black border border-green-500/30 p-6 rounded font-mono text-sm shadow-[0_0_30px_rgba(0,255,0,0.1)]">
+                            <div className="flex items-center gap-2 text-green-500 mb-4 border-b border-green-900/50 pb-2">
+                                <ShieldCheck size={18} />
+                                <span className="font-bold">TRANSMISSION COMPLETE</span>
+                            </div>
+                            <div className="space-y-2 text-green-400">
+                                <p>&gt; Status: 200 OK</p>
+                                <p>&gt; Payload received at server: huup.com.mx</p>
+                                <p>&gt; Ticket ID: <span className="text-white">#XA-{Math.floor(Math.random() * 9999)}</span> generated.</p>
+                                <p>&gt; Encryption: AES-256</p>
+                                <div className="h-px bg-green-900/50 my-4" />
+                                <p className="text-gray-400 text-xs">
+                                    // SYSTEM_NOTE: El equipo de ingeniería revisará tu solicitud.
+                                    <br/>Tiempo estimado de respuesta: &lt; 24h.
+                                </p>
+                                <p className="animate-pulse mt-4 text-brand-primary">&gt; Closing session..._</p>
+                            </div>
+                        </div>
+                    </motion.div>
+                ) : (
+                    /* === FORMULARIO STANDARD === */
+                    <motion.form 
+                        key="contact-form"
+                        action={formAction} 
+                        className="space-y-6 flex-1"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, y: -20 }}
+                    >
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                            <label htmlFor="name" className="text-[10px] font-mono font-bold text-brand-primary uppercase ml-1 tracking-wider"> // Tu Nombre</label>
+                            <input 
+                            type="text" id="name" name="name" placeholder="Ej. Juan Pérez" 
+                            className="w-full bg-black border border-white/20 rounded-none px-4 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all font-mono text-sm" 
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label htmlFor="company" className="text-[10px] font-mono font-bold text-brand-primary uppercase ml-1 tracking-wider">// Empresa</label>
+                            <input 
+                            type="text" id="company" name="company" placeholder="Ej. StartUp Inc." 
+                            className="w-full bg-black border border-white/20 rounded-none px-4 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all font-mono text-sm" 
+                            />
+                        </div>
+                        </div>
 
-                  {/* EMPRESA */}
-                  <div className="space-y-2">
-                    <label htmlFor="company" className="text-[10px] font-mono font-bold text-brand-primary uppercase ml-1 tracking-wider">// Empresa</label>
-                    <input 
-                      type="text" 
-                      id="company" 
-                      name="company" 
-                      placeholder="Ej. StartUp Inc." 
-                      className="w-full bg-black border border-white/20 rounded-none px-4 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all font-mono text-sm" 
-                    />
-                  </div>
-                </div>
+                        <div className="space-y-2">
+                        <label htmlFor="email" className="text-[10px] font-mono font-bold text-brand-primary uppercase ml-1 tracking-wider">// Correo Electrónico (Requerido)</label>
+                        <input 
+                            type="email" id="email" name="email" required placeholder="juan@empresa.com" 
+                            className="w-full bg-black border border-white/20 rounded-none px-4 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all font-mono text-sm" 
+                        />
+                        {state?.errors?.email && (
+                            <p className="text-red-500 text-[10px] font-mono flex items-center gap-1"><AlertCircle size={10} /> {state.errors.email}</p>
+                        )}
+                        </div>
 
-                {/* EMAIL */}
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-[10px] font-mono font-bold text-brand-primary uppercase ml-1 tracking-wider">// Correo Electrónico (Requerido)</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    required // ✅ Agregado required
-                    placeholder="juan@empresa.com" 
-                    className="w-full bg-black border border-white/20 rounded-none px-4 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all font-mono text-sm" 
-                  />
-                  {state?.errors?.email && (
-                      <p className="text-red-500 text-[10px] font-mono flex items-center gap-1"><AlertCircle size={10} /> {state.errors.email}</p>
-                  )}
-                </div>
+                        <div className="space-y-2">
+                        <label htmlFor="message" className="text-[10px] font-mono font-bold text-brand-primary uppercase ml-1 tracking-wider">// Detalles de la Misión</label>
+                        <textarea 
+                            id="message" name="message" required rows="5" placeholder="Describe los requerimientos técnicos..." 
+                            className="w-full bg-black border border-white/20 rounded-none px-4 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all resize-none font-mono text-sm" 
+                        />
+                        {state?.errors?.message && (
+                            <p className="text-red-500 text-[10px] font-mono flex items-center gap-1"><AlertCircle size={10} /> {state.errors.message}</p>
+                        )}
+                        </div>
 
-                {/* MENSAJE */}
-                <div className="space-y-2">
-                  <label htmlFor="message" className="text-[10px] font-mono font-bold text-brand-primary uppercase ml-1 tracking-wider">// Detalles de la Misión</label>
-                  <textarea 
-                    id="message" 
-                    name="message" 
-                    required // ✅ Agregado required
-                    rows="5" 
-                    placeholder="Describe los requerimientos técnicos..." 
-                    className="w-full bg-black border border-white/20 rounded-none px-4 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all resize-none font-mono text-sm" 
-                  />
-                  {state?.errors?.message && (
-                      <p className="text-red-500 text-[10px] font-mono flex items-center gap-1"><AlertCircle size={10} /> {state.errors.message}</p>
-                  )}
-                </div>
-
-                <SubmitButton />
-
-                {state?.message && (
-                    <div className={`mt-4 p-3 text-xs border flex items-center gap-2 font-mono ${
-                    state.success ? 'border-green-500/30 bg-green-500/10 text-green-400' : 'border-red-500/30 bg-red-500/10 text-red-400'
-                    }`}>
-                        {state.success ? <CheckCircle2 size={14}/> : <AlertCircle size={14}/>}
-                        <span> SYSTEM_LOG: {state.message}</span>
-                    </div>
+                        <SubmitButton />
+                        
+                        {/* Error de servidor general */}
+                        {state?.message && !state.success && (
+                            <div className="mt-4 p-3 text-xs border border-red-500/30 bg-red-500/10 text-red-400 flex items-center gap-2 font-mono">
+                                <AlertCircle size={14}/> <span>ERROR: {state.message}</span>
+                            </div>
+                        )}
+                    </motion.form>
                 )}
-                
-                <p className="text-center text-[10px] font-mono text-gray-500 mt-4">
-                  {`> Tiempo estimado de respuesta: < 24 horas.`}
-                </p>
-              </form>
+              </AnimatePresence>
+
             </div>
           </motion.div>
         </div>

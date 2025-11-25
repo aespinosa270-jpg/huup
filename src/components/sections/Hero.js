@@ -6,6 +6,11 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Terminal, Code2, Cpu, Zap, Smartphone } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
+// === NUEVO MANIFIESTO TÉCNICO ===
+const MANIFESTO_COPY = "Desplegamos protocolos de escalabilidad con React Server Components y Edge Functions, garantizando un rendimiento en el percentil 99 de la industria. Su arquitectura digital ya no será un cuello de botella; será su ventaja competitiva más poderosa.";
+const CTA_PRIMARY = "INICIAR DIAGNÓSTICO TÉCNICO";
+const CTA_SECONDARY = "EXPLORAR ARQUITECTURAS DESPLEGADAS";
+
 // --- 1. MATRIX RAIN EFFECT (OPTIMIZADO: Solo corre en Desktop) ---
 const MatrixRain = () => {
     const canvasRef = useRef(null);
@@ -67,25 +72,25 @@ const MatrixRain = () => {
 
 // --- 2. TEXT SCRAMBLE EFFECT (Sin cambios) ---
 const ScrambleTitle = ({ text }) => {
-  const [display, setDisplay] = useState(text);
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
+    const [display, setDisplay] = useState(text);
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
 
-  useEffect(() => {
-    let iteration = 0;
-    const interval = setInterval(() => {
-      setDisplay(
-        text.split("").map((letter, index) => {
-            if (index < iteration) return text[index];
-            return chars[Math.floor(Math.random() * chars.length)];
-          }).join("")
-      );
-      if (iteration >= text.length) clearInterval(interval);
-      iteration += 1 / 3;
-    }, 50);
-    return () => clearInterval(interval);
-  }, [text]);
+    useEffect(() => {
+        let iteration = 0;
+        const interval = setInterval(() => {
+            setDisplay(
+                text.split("").map((letter, index) => {
+                    if (index < iteration) return text[index];
+                    return chars[Math.floor(Math.random() * chars.length)];
+                }).join("")
+            );
+            if (iteration >= text.length) clearInterval(interval);
+            iteration += 1 / 3;
+        }, 50);
+        return () => clearInterval(interval);
+    }, [text]);
 
-  return <span>{display}</span>;
+    return <span>{display}</span>;
 };
 
 // --- 3. ANIMACIÓN FLOTANTE ---
@@ -188,117 +193,133 @@ const HuupIsometricEcosystem = () => {
 };
 
 export default function Hero() {
-  const { scrollY } = useScroll();
-  const yBg = useTransform(scrollY, [0, 500], [0, 200]);
+    const { scrollY } = useScroll();
+    const yBg = useTransform(scrollY, [0, 500], [0, 200]);
 
-  return (
-    <section className="relative min-h-screen flex items-center bg-[#050505] overflow-hidden pt-20 md:pt-0">
-      
-      {/* 0. MATRIX RAIN: Solo visible en desktop (hidden md:block) */}
-      <div className="absolute inset-0 z-0">
-          <MatrixRain />
-      </div>
+    // Función de Event Tracking (Placeholder - debe ser configurada para GTM/GA)
+    const handlePrimaryCtaClick = () => {
+        // Ejecutar el seguimiento de eventos
+        console.log("EVENT TRACKING: click_diagnostico_tecnico registrado.");
+        if (typeof window.dataLayer !== 'undefined') {
+            window.dataLayer.push({
+                'event': 'click_diagnostico_tecnico',
+                'location': 'Hero'
+            });
+        }
+        // Nota: La navegación al #contacto ocurre con el componente <Link>
+    };
 
-      {/* 1. FONDO GRID: Plano en móvil, 3D en Desktop */}
-      <motion.div style={{ y: yBg }} className="absolute inset-0 z-0 pointer-events-none perspective-1000">
-         {/* En móvil quitamos el rotateX y scale para ahorrar GPU */}
-         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:40px_40px] md:bg-[size:60px_60px] md:[transform:rotateX(60deg)scale(2)] origin-top opacity-20 md:opacity-30"></div>
-         <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent"></div>
-      </motion.div>
-
-      {/* Spotlights: Simplificados en móvil */}
-      <div className="absolute top-[-10%] left-[-10%] w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-brand-primary/10 blur-[80px] md:blur-[150px] rounded-full pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          
-          {/* === COLUMNA IZQUIERDA: Texto === */}
-          <div className="text-left relative z-20 pt-10 md:pt-0">
+    return (
+        <section className="relative min-h-screen flex items-center bg-[#050505] overflow-hidden pt-20 md:pt-0">
             
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded border border-brand-primary/30 bg-brand-primary/10 text-brand-primary text-xs font-mono font-bold uppercase tracking-widest mb-6 backdrop-blur-md"
-            >
-              <Terminal size={12} /> System.Root // v2.0
+            {/* 0. MATRIX RAIN: Solo visible en desktop (hidden md:block) */}
+            <div className="absolute inset-0 z-0">
+                <MatrixRain />
+            </div>
+
+            {/* 1. FONDO GRID: Plano en móvil, 3D en Desktop */}
+            <motion.div style={{ y: yBg }} className="absolute inset-0 z-0 pointer-events-none perspective-1000">
+                {/* En móvil quitamos el rotateX y scale para ahorrar GPU */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:40px_40px] md:bg-[size:60px_60px] md:[transform:rotateX(60deg)scale(2)] origin-top opacity-20 md:opacity-30"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent"></div>
             </motion.div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter mb-6 leading-[0.9]">
-              <div className="flex flex-col">
-                 <motion.span
-                    initial={{ opacity: 0, filter: "blur(10px)" }}
-                    animate={{ opacity: 1, filter: "blur(0px)" }}
-                    transition={{ duration: 0.8 }}
-                 >
-                    INGENIERÍA
-                 </motion.span>
-                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-white to-brand-primary bg-300% animate-gradient">
-                    <ScrambleTitle text="DIGITAL" />
-                 </span>
-              </div>
-            </h1>
+            {/* Spotlights: Simplificados en móvil */}
+            <div className="absolute top-[-10%] left-[-10%] w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-brand-primary/10 blur-[80px] md:blur-[150px] rounded-full pointer-events-none" />
 
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg md:text-xl text-gray-400 max-w-xl mb-10 font-light border-l-2 border-brand-primary/30 pl-6 leading-relaxed"
-            >
-              Arquitectura de software de alto rendimiento. Sin plantillas. 
-              Creamos ecosistemas escalables diseñados para dominar el mercado.
-            </motion.p>
+            <div className="max-w-7xl mx-auto px-6 relative z-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                {/* === COLUMNA IZQUIERDA: Texto === */}
+                <div className="text-left relative z-20 pt-10 md:pt-0">
+                    
+                    <motion.div 
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="inline-flex items-center gap-2 px-3 py-1 rounded border border-brand-primary/30 bg-brand-primary/10 text-brand-primary text-xs font-mono font-bold uppercase tracking-widest mb-6 backdrop-blur-md"
+                    >
+                        <Terminal size={12} /> System.Root // v2.0
+                    </motion.div>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="flex flex-wrap gap-4"
-            >
-              <Link 
-                href="#contacto" 
-                className="group relative px-8 py-4 bg-brand-primary text-black font-bold text-sm uppercase tracking-widest rounded-sm hover:shadow-[0_0_40px_rgba(249,115,22,0.4)] transition-all overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-white/40 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                <span className="relative z-10 flex items-center gap-2">
-                    INICIALIZAR <ArrowRight size={16} />
-                </span>
-              </Link>
-              
-              <Link 
-                href="#portafolio" 
-                className="px-8 py-4 bg-transparent border border-white/20 text-white font-bold text-sm uppercase tracking-widest rounded-sm hover:bg-white/5 hover:border-white transition-all flex items-center gap-2 backdrop-blur-sm"
-              >
-                <Code2 size={16} className="text-gray-500" /> SISTEMAS
-              </Link>
-            </motion.div>
+                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter mb-6 leading-[0.9]">
+                        <div className="flex flex-col">
+                            <motion.span
+                                initial={{ opacity: 0, filter: "blur(10px)" }}
+                                animate={{ opacity: 1, filter: "blur(0px)" }}
+                                transition={{ duration: 0.8 }}
+                            >
+                                INGENIERÍA
+                            </motion.span>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-white to-brand-primary bg-300% animate-gradient">
+                                <ScrambleTitle text="DIGITAL" />
+                            </span>
+                        </div>
+                    </h1>
 
-            {/* Stats Rápidos */}
-            <motion.div 
-                 initial={{ opacity: 0 }}
-                 animate={{ opacity: 1 }}
-                 transition={{ delay: 1 }}
-                 className="mt-12 flex gap-8 border-t border-white/5 pt-6"
-            >
-                <div>
-                    <div className="text-2xl font-bold text-white font-mono flex items-center gap-1">
-                        +50 <span className="text-brand-primary text-sm">PROYECTOS</span>
-                    </div>
-                    <div className="text-[10px] text-gray-500 uppercase">Desplegados</div>
+                    {/* === MODIFICACIÓN P1: MANIFIESTO TÉCNICO === */}
+                    <motion.p 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        className="text-lg md:text-xl text-gray-400 max-w-xl mb-10 font-light border-l-2 border-brand-primary/30 pl-6 leading-relaxed"
+                    >
+                        {MANIFESTO_COPY}
+                    </motion.p>
+
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                        className="flex flex-wrap gap-4"
+                    >
+                        {/* === MODIFICACIÓN P1: CTA PRIMARIO (Diagnóstico + Tracking) === */}
+                        <Link 
+                            href="#contacto" 
+                            className="group relative px-8 py-4 bg-brand-primary text-black font-bold text-sm uppercase tracking-widest rounded-sm hover:shadow-[0_0_40px_rgba(249,115,22,0.4)] transition-all overflow-hidden"
+                            onClick={handlePrimaryCtaClick} // Llamada a la función de tracking
+                        >
+                            <div className="absolute inset-0 bg-white/40 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                            <span className="relative z-10 flex items-center gap-2">
+                                {CTA_PRIMARY} <ArrowRight size={16} />
+                            </span>
+                        </Link>
+                        
+                        {/* === MODIFICACIÓN P1: CTA SECUNDARIO (Arquitecturas) === */}
+                        <Link 
+                            href="#portafolio" 
+                            className="px-8 py-4 bg-transparent border border-white/20 text-white font-bold text-sm uppercase tracking-widest rounded-sm hover:bg-white/5 hover:border-white transition-all flex items-center gap-2 backdrop-blur-sm"
+                        >
+                            <Code2 size={16} className="text-gray-500" /> {CTA_SECONDARY}
+                        </Link>
+                    </motion.div>
+
+                    {/* Stats Rápidos */}
+                    <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 1 }}
+                            className="mt-12 flex gap-8 border-t border-white/5 pt-6"
+                    >
+                        <div>
+                            <div className="text-2xl font-bold text-white font-mono flex items-center gap-1">
+                                +50 <span className="text-brand-primary text-sm">PROYECTOS</span>
+                            </div>
+                            <div className="text-[10px] text-gray-500 uppercase">Desplegados</div>
+                        </div>
+                        <div>
+                            <div className="text-2xl font-bold text-white font-mono flex items-center gap-1">
+                                99.9% <span className="text-green-500 text-sm">UPTIME</span>
+                            </div>
+                            <div className="text-[10px] text-gray-500 uppercase">Garantizado</div>
+                        </div>
+                    </motion.div>
                 </div>
-                <div>
-                    <div className="text-2xl font-bold text-white font-mono flex items-center gap-1">
-                        99.9% <span className="text-green-500 text-sm">UPTIME</span>
-                    </div>
-                    <div className="text-[10px] text-gray-500 uppercase">Garantizado</div>
+
+                {/* === COLUMNA DERECHA: OCULTA EN MÓVIL PARA RENDIMIENTO === */}
+                <div className="relative w-full h-full hidden lg:flex items-center justify-center pointer-events-none">
+                    <HuupIsometricEcosystem />
                 </div>
-            </motion.div>
-          </div>
 
-          {/* === COLUMNA DERECHA: OCULTA EN MÓVIL PARA RENDIMIENTO === */}
-          <div className="relative w-full h-full hidden lg:flex items-center justify-center pointer-events-none">
-             <HuupIsometricEcosystem />
-          </div>
-
-      </div>
-    </section>
-  );
+            </div>
+        </section>
+    );
 }

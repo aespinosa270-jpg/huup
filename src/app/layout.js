@@ -21,13 +21,12 @@ const techMono = JetBrains_Mono({
 
 // ✅ METADATA ACTUALIZADA (FAVICON FORZADO)
 export const metadata = {
-  title: "Huup",
-  description: "Agencia de desarrollo web full-stack. Creamos sitios web ultrarrápidos y escalables con Next.js.",
-  // 👇 Esto le dice al navegador explícitamente dónde buscar en la carpeta 'public'
+  title: "Huup | Desarrollo de Software a Medida",
+  description: "...",
   icons: {
-    icon: '/icon.png',
-    shortcut: '/icon.png',
-    apple: '/icon.png',
+    icon: '/logo.png',      // <--- CAMBIO AQUÍ
+    shortcut: '/logo.png',  // <--- CAMBIO AQUÍ
+    apple: '/logo.png',     // <--- CAMBIO AQUÍ
   },
 };
 

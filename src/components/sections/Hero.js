@@ -62,7 +62,7 @@ export default function Hero() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-lg md:text-2xl text-gray-400 max-w-xl mb-10 font-light border-l-2 border-brand-primary/30 pl-6"
             >
-              No hacemos simples sitios web. Construimos plataformas escalables, sistemas de diseño y experiencias inmersivas con Next.js 15.
+              Trascendemos el código convencional. Creamos ecosistemas digitales escalables y experiencias inmersivas, diseñadas hoy para dominar el internet de mañana.
             </motion.p>
 
             <motion.div 

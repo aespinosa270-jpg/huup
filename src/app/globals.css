@@ -5,11 +5,13 @@
 :root {
   --background: #050505;
   --foreground: #ffffff;
+  --brand-primary: #f97316;
 }
 
 html {
   scroll-behavior: smooth;
   background-color: var(--background);
+  overflow-x: hidden; /* Evita scroll horizontal accidental */
 }
 
 body {
@@ -17,47 +19,79 @@ body {
   background-color: var(--background);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-/* --- SCROLLBAR TIPO "HACKER" --- */
-::-webkit-scrollbar {
-  width: 10px;
+/* --- SELECCIÓN DE TEXTO (BRANDING) --- */
+::selection {
+  background: rgba(249, 115, 22, 0.3); /* Naranja transparente */
+  color: #ffffff;
 }
 
-::-webkit-scrollbar-track {
-  background: #050505;
+/* --- SCROLLBAR OPTIMIZADO (LÓGICA HÍBRIDA) --- */
+
+/* 1. DESKTOP: Scrollbar "Hacker" visible */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px; /* Un poco más fino para elegancia */
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #050505;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #262626;
+    border-radius: 4px;
+    border: 1px solid #050505;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #f97316; /* Naranja al hover */
+  }
 }
 
-::-webkit-scrollbar-thumb {
-  background: #262626;
-  border-radius: 5px;
-  border: 2px solid #050505;
+/* 2. MÓVIL: Scrollbar Oculto (Nativo/Invisible) para Performance */
+@media (max-width: 767px) {
+  ::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Webkit */
+    width: 0px;
+    background: transparent;
+  }
+  
+  * {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #f97316; /* Naranja al hover */
-}
-
-/* --- TEXTURA CINEMATOGRÁFICA (NOISE) --- */
-/* Esto genera un granulado estático sutil sobre toda la web */
+/* --- TEXTURA CINEMATOGRÁFICA (OPTIMIZADA) --- */
 .bg-noise {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  pointer-events: none; /* CRÍTICO: Permite hacer click a través de la textura */
-  z-index: 50; /* Por encima de casi todo, pero debajo de modales */
-  opacity: 0.035; /* Calibrado: 0.02 muy sutil, 0.05 muy visible */
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.035;
+  /* Por defecto NO cargamos la imagen para ahorrar recursos en móvil */
+  display: none; 
+}
+
+/* Solo activamos el ruido en pantallas grandes (Desktop) */
+@media (min-width: 768px) {
+  .bg-noise {
+    display: block;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
 }
 
 /* --- UTILIDADES EXTRA --- */
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-primary via-pink-500 to-violet-600;
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-primary via-orange-400 to-yellow-500;
 }
 
-/* Tipografía balanceada para títulos (Evita palabras huérfanas) */
 .text-balance {
   text-wrap: balance;
 }

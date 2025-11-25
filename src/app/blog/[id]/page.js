@@ -4,10 +4,10 @@
 import Link from "next/link";
 import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
 import { notFound } from 'next/navigation'; // Necesario para manejar 404
-import { getPostById } from '@/lib/data/blog'; // Importar la función de fetching de datos
+// 🟢 CORRECCIÓN: Apuntando a la nueva ruta local dentro de src/app/blog/data/
+import { getPostById } from '../data/mock-posts'; 
 
 // 1. GENERACIÓN DE METADATOS DINÁMICOS (SEO)
-// Esto se ejecuta Server-Side y permite que los crawlers lean el título correcto.
 export async function generateMetadata({ params }) {
     const post = await getPostById(params.id);
 
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }) {
 export default async function BlogPost({ params }) {
     
     // PASO CRUCIAL: Obtención directa del ID y Fetching
-    const { id } = params; // Ya no es necesario 'await params' en versiones recientes de Next.js
+    const { id } = params; 
     
     const post = await getPostById(id); // Fetch de datos del post
     
@@ -39,14 +39,14 @@ export default async function BlogPost({ params }) {
     }
 
     // Calculamos el tiempo de lectura (simulado)
-    const readTime = Math.ceil(post.content.length / 1200); // Estimación de 1200 caracteres por minuto
+    const readTime = Math.ceil(post.content.length / 1200); 
 
     return (
         <article className="min-h-screen bg-[#050505] pt-32 pb-20 relative">
             
             {/* Barra de progreso (Se mantiene) */}
             <div className="fixed top-0 left-0 w-full h-1 bg-white/10 z-50">
-                <div className="h-full w-1/3 bg-brand-primary" /> {/* Esto debería ser dinámico con JS si fuera un Client Component */}
+                <div className="h-full w-1/3 bg-brand-primary" />
             </div>
 
             <div className="max-w-3xl mx-auto px-6 relative z-10">

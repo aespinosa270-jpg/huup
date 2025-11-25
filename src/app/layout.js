@@ -19,15 +19,11 @@ const techMono = JetBrains_Mono({
   display: "swap",
 });
 
-// ✅ METADATA ACTUALIZADA (FAVICON FORZADO)
 export const metadata = {
-  title: "Huup | Desarrollo de Software a Medida",
-  description: "...",
-  icons: {
-    icon: '/logo.png',      // <--- CAMBIO AQUÍ
-    shortcut: '/logo.png',  // <--- CAMBIO AQUÍ
-    apple: '/logo.png',     // <--- CAMBIO AQUÍ
-  },
+  title: "Huup",
+  description: "Agencia de desarrollo web full-stack. Creamos sitios web ultrarrápidos y escalables con Next.js.",
+  // 🚀 NOTA: Hemos eliminado 'icons' manuales. 
+  // Next.js buscará automáticamente el archivo 'icon.png' dentro de src/app/
 };
 
 export default function RootLayout({ children }) {
@@ -45,7 +41,6 @@ export default function RootLayout({ children }) {
         </main>
 
         {/* 2. INTEGRACIÓN DE NEXUS AQUÍ 👇 */}
-        {/* Lo ponemos al final para asegurar que el z-index funcione bien sobre el contenido */}
         <NexusChat />
 
       </body>

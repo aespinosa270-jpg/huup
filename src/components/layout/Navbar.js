@@ -32,13 +32,13 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [dropdownRef]);
 
-  // --- MODIFICACIÓN DE NAVLINKS ---
+  // --- NAVLINKS ---
   const navLinks = [
     { name: "Inicio", href: "/" },
     { name: "Servicios", href: "/#servicios" },
     { name: "Portafolio", href: "/#portafolio" },
     { name: "Blog", href: "/blog" },
-    { name: "Foro", href: "/foro" }, // <--- ¡AGREGADO AQUÍ!
+    { name: "Foro", href: "/foro" },
     { name: "Contacto", href: "/#contacto" },
   ];
 
@@ -86,14 +86,25 @@ export default function Navbar() {
             {/* --- DROPDOWN DE ACCESO (Escritorio) --- */}
             <div className="hidden md:block relative" ref={dropdownRef}>
               
-              {/* Botón naranja principal */}
+              {/* ✅ BOTÓN MEJORADO (CON EFECTO ONLINE) */}
               <button 
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center gap-2 px-6 py-2.5 bg-brand-primary text-white text-sm font-bold rounded-full transition-all shadow-[0_0_20px_rgba(249,115,22,0.2)] hover:shadow-[0_0_30px_rgba(249,115,22,0.5)] hover:-translate-y-0.5 active:translate-y-0"
+                className="flex items-center gap-2 px-6 py-2.5 bg-brand-primary text-white text-sm font-bold rounded-full transition-all shadow-[0_0_20px_rgba(249,115,22,0.2)] hover:shadow-[0_0_30px_rgba(249,115,22,0.5)] hover:-translate-y-0.5 active:translate-y-0 relative overflow-hidden group"
               >
-                <User size={18} />
-                <span>Acceso</span>
-                <ChevronDown size={14} className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                {/* Efecto de brillo al pasar el mouse */}
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 skew-y-12" />
+                
+                <div className="relative z-10 flex items-center gap-2">
+                    <User size={18} />
+                    <span>Acceso</span>
+                    {/* Indicador de Status "Online" */}
+                    <span className="flex h-2 w-2 relative">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
+                    </span>
+                </div>
+                
+                <ChevronDown size={14} className={`relative z-10 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {/* Menú Desplegable Animado */}

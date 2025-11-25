@@ -39,7 +39,7 @@ export default function Hero() {
               animate={{ opacity: 1, x: 0 }}
               className="inline-flex items-center gap-2 px-3 py-1 rounded border border-brand-primary/30 bg-brand-primary/10 text-brand-primary text-xs font-mono font-bold uppercase tracking-widest mb-6"
             >
-              <Terminal size={12} /> Soluciones Web
+              <Terminal size={12} /> Ingeniería de Software
             </motion.div>
 
             <motion.h1 
@@ -48,11 +48,11 @@ export default function Hero() {
               transition={{ duration: 0.5 }}
               className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter mb-6 leading-[0.9]"
             >
-              DISEÑO DE <br />
-              SERVICIOS <br />
-              {/* CORRECCIÓN: Gradiente puramente Naranja para volumen, sin rosa */}
+              ARQUITECTURA <br />
+              DIGITAL <br />
+              {/* CORRECCIÓN: Copy agresivo y técnico */}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-orange-500 drop-shadow-[0_0_35px_rgba(249,115,22,0.4)]">
-                Y SOLUCIONES WEB
+                DE ALTO RENDIMIENTO
               </span>
             </motion.h1>
 
@@ -62,7 +62,7 @@ export default function Hero() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-lg md:text-2xl text-gray-400 max-w-xl mb-10 font-light border-l-2 border-brand-primary/30 pl-6"
             >
-              Creando experiencias digitales personalizadas y escalables.
+              No hacemos simples sitios web. Construimos plataformas escalables, sistemas de diseño y experiencias inmersivas con Next.js 15.
             </motion.p>
 
             <motion.div 
@@ -75,19 +75,19 @@ export default function Hero() {
                 href="#contacto" 
                 className="group relative px-8 py-4 bg-brand-primary text-white font-bold text-lg rounded hover:bg-brand-secondary transition-all shadow-[0_0_30px_rgba(249,115,22,0.3)] hover:shadow-[0_0_50px_rgba(249,115,22,0.5)]"
               >
-                Cotizar mi proyecto <ArrowRight size={20} className="inline ml-2 group-hover:translate-x-1 transition-transform" />
+                Iniciar Proyecto <ArrowRight size={20} className="inline ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
               
               <Link 
                 href="#portafolio" 
                 className="px-8 py-4 bg-white/5 border border-white/10 text-white font-bold text-lg rounded hover:bg-white/10 hover:border-white/30 transition-all backdrop-blur-md"
               >
-                Ver Portafolio
+                Ver Casos de Éxito
               </Link>
             </motion.div>
           </div>
 
-          {/* === COLUMNA DERECHA: ECOSISTEMA 3D === */}
+          {/* === COLUMNA DERECHA: ECOSISTEMA 3D (Sin cambios, ya está perfecto) === */}
           <div className="relative h-[600px] w-full hidden lg:flex items-center justify-center perspective-1000">
             
             {/* Luz ambiental trasera (Naranja puro) */}

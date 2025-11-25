@@ -34,6 +34,9 @@ export default function RootLayout({ children }) {
         className={`${inter.variable} ${techMono.variable} font-sans bg-[#050505] text-white antialiased selection:bg-brand-primary/30 selection:text-white relative`}
       >
         
+        {/* 🔥 AQUÍ ESTÁ LA MAGIA: TEXTURA GLOBAL CINEMATOGRÁFICA */}
+        <div className="bg-noise" />
+        
         <Navbar />
         
         <main className="relative z-10">

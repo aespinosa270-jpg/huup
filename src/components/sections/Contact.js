@@ -5,7 +5,7 @@ import { useActionState, useState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import { sendContactEmail } from "@/app/actions";
 import { motion, AnimatePresence } from "framer-motion";
-import { AtSign, ArrowRight, Terminal, Radio, AlertCircle, Wifi, Cpu, ShieldCheck } from "lucide-react";
+import { AtSign, ArrowRight, Terminal, Radio, AlertCircle, Wifi, ShieldCheck } from "lucide-react";
 
 // === LOGIC COMPONENTS ===
 
@@ -89,8 +89,6 @@ const ContactDataLink = ({ icon: Icon, label, value, href, delay }) => (
 
 export default function Contact() {
   const [state, formAction] = useActionState(sendContactEmail, initialState);
-  
-  // 🚀 LÓGICA DE LATENCIA REAL
   const [latency, setLatency] = useState(null);
 
   useEffect(() => {
@@ -114,10 +112,11 @@ export default function Contact() {
   return (
     <section id="contacto" className="py-32 bg-brand-dark relative overflow-hidden">
       
-      {/* Fondo Grid Continuo */}
+      {/* Fondo Grid Continuo - OPTIMIZADO PARA MÓVIL */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-brand-primary/5 rounded-full blur-[150px] pointer-events-none" />
+        {/* El blur gigante ahora solo aparece en Desktop (md:block) */}
+        <div className="hidden md:block absolute bottom-0 right-0 w-[600px] h-[600px] bg-brand-primary/5 rounded-full blur-[150px] pointer-events-none" />
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -161,7 +160,7 @@ export default function Contact() {
               <ContactDataLink 
                 icon={AtSign} 
                 label="EMAIL" 
-                value="hola@huup.com.mx" // FIX: huup.agency -> huup.com.mx
+                value="hola@huup.com.mx" 
                 href="mailto:hola@huup.com.mx" 
                 delay={0.3}
               />
@@ -175,7 +174,7 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* === COLUMNA DERECHA: Formulario o Terminal de Éxito === */}
+          {/* === COLUMNA DERECHA: Formulario === */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -203,7 +202,7 @@ export default function Contact() {
 
               <AnimatePresence mode="wait">
                 {state.success ? (
-                    /* === ESTADO DE ÉXITO: TERMINAL STYLE (Directiva #HUUP-001) === */
+                    /* === ESTADO DE ÉXITO: TERMINAL STYLE === */
                     <motion.div 
                         key="success-terminal"
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -280,7 +279,6 @@ export default function Contact() {
 
                         <SubmitButton />
                         
-                        {/* Error de servidor general */}
                         {state?.message && !state.success && (
                             <div className="mt-4 p-3 text-xs border border-red-500/30 bg-red-500/10 text-red-400 flex items-center gap-2 font-mono">
                                 <AlertCircle size={14}/> <span>ERROR: {state.message}</span>

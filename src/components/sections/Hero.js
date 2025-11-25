@@ -3,60 +3,48 @@
 
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, Terminal, Code2, Cpu, Zap, Layout, Smartphone, Database } from "lucide-react";
+import { ArrowRight, Terminal, Code2, Cpu, Zap, Smartphone } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
-// --- 1. MATRIX RAIN EFFECT (CANVAS OPTIMIZADO) ---
+// --- 1. MATRIX RAIN EFFECT (OPTIMIZADO: Solo corre en Desktop) ---
 const MatrixRain = () => {
     const canvasRef = useRef(null);
 
     useEffect(() => {
+        // DETECTAR MÓVIL: Si es pantalla pequeña, no ejecutar el script
+        if (window.innerWidth < 768) return;
+
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
         
-        // Configuración inicial
         let width = canvas.width = window.innerWidth;
         let height = canvas.height = window.innerHeight;
         
-        // Caracteres a usar (Mezcla de Katakana, Números y Operadores para look "Raw Data")
         const chars = '0101010101ABCDEF<>/\\{};+*&%$#@'.split('');
         const fontSize = 14;
         const columns = width / fontSize;
         
-        // Array para guardar la posición Y de cada columna
         const drops = [];
-        for(let x = 0; x < columns; x++) {
-            drops[x] = 1;
-        }
+        for(let x = 0; x < columns; x++) drops[x] = 1;
 
         const draw = () => {
-            // Fondo semi-transparente para efecto de "estela"
             ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
             ctx.fillRect(0, 0, width, height);
-            
-            ctx.fillStyle = '#f97316'; // Color Naranja de la Marca
+            ctx.fillStyle = '#f97316'; 
             ctx.font = `${fontSize}px monospace`;
             
             for(let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
-                
-                // Dibujar caracter
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                
-                // Resetear gota al azar para que no sea uniforme
-                if(drops[i] * fontSize > height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                
+                if(drops[i] * fontSize > height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             }
         };
 
-        // Loop de animación
-        const interval = setInterval(draw, 33); // ~30 FPS
+        const interval = setInterval(draw, 33); 
 
-        // Handle Resize
         const handleResize = () => {
+            if (window.innerWidth < 768) return; // No redibujar en móvil
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
         };
@@ -68,15 +56,16 @@ const MatrixRain = () => {
         };
     }, []);
 
+    // CSS: hidden md:block asegura que ni siquiera se pinte el elemento en móvil
     return (
         <canvas 
             ref={canvasRef} 
-            className="absolute inset-0 w-full h-full opacity-20 mix-blend-screen pointer-events-none"
+            className="hidden md:block absolute inset-0 w-full h-full opacity-20 mix-blend-screen pointer-events-none"
         />
     );
 };
 
-// --- 2. TEXT SCRAMBLE EFFECT ---
+// --- 2. TEXT SCRAMBLE EFFECT (Sin cambios) ---
 const ScrambleTitle = ({ text }) => {
   const [display, setDisplay] = useState(text);
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
@@ -85,13 +74,10 @@ const ScrambleTitle = ({ text }) => {
     let iteration = 0;
     const interval = setInterval(() => {
       setDisplay(
-        text
-          .split("")
-          .map((letter, index) => {
+        text.split("").map((letter, index) => {
             if (index < iteration) return text[index];
             return chars[Math.floor(Math.random() * chars.length)];
-          })
-          .join("")
+          }).join("")
       );
       if (iteration >= text.length) clearInterval(interval);
       iteration += 1 / 3;
@@ -102,49 +88,35 @@ const ScrambleTitle = ({ text }) => {
   return <span>{display}</span>;
 };
 
-// --- 3. ANIMACIÓN DE FLOTACIÓN ---
+// --- 3. ANIMACIÓN FLOTANTE ---
 const floatAnimation = (delay) => ({
     initial: { y: 0 },
     animate: {
         y: [-15, 15, -15],
-        transition: {
-            duration: 6,
-            delay: delay,
-            repeat: Infinity,
-            ease: "easeInOut"
-        }
+        transition: { duration: 6, delay: delay, repeat: Infinity, ease: "easeInOut" }
     }
 });
 
-// --- 4. HUUP ISOMETRIC ECOSYSTEM ---
+// --- 4. HUUP ISOMETRIC ECOSYSTEM (Solo visible en Desktop) ---
 const HuupIsometricEcosystem = () => {
     return (
         <div className="relative w-[600px] h-[600px] flex items-center justify-center perspective-[2000px]">
-            
-            {/* GLOW ATMOSFÉRICO */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-brand-primary/20 blur-[100px] rounded-full animate-pulse" />
-
-            {/* CONTENEDOR 3D */}
             <motion.div 
                 className="relative w-[450px] h-[400px] preserve-3d"
-                style={{ 
-                    transformStyle: "preserve-3d",
-                    transform: "rotateX(55deg) rotateZ(45deg) scale(0.9)",
-                }}
+                style={{ transformStyle: "preserve-3d", transform: "rotateX(55deg) rotateZ(45deg) scale(0.9)" }}
             >
-                {/* NIVEL 0: SOMBRA */}
+                {/* SOMBRA OPTIMIZADA */}
                 <div className="absolute inset-0 bg-black blur-xl opacity-50 transform translate-z-[-50px] scale-90" />
 
-                {/* NIVEL 1: DESKTOP UI */}
+                {/* DESKTOP UI */}
                 <div className="absolute inset-0 bg-[#050505]/90 border border-white/10 rounded-xl backdrop-blur-sm shadow-2xl overflow-hidden flex flex-col group hover:border-brand-primary/50 transition-colors duration-500">
                     <div className="h-8 border-b border-white/10 flex items-center px-4 gap-2 bg-white/5">
                         <div className="w-2 h-2 rounded-full bg-red-500/50" />
                         <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
                         <div className="w-2 h-2 rounded-full bg-green-500/50" />
-                        <div className="ml-auto w-20 h-1 bg-white/10 rounded-full" />
                     </div>
                     <div className="p-6 flex flex-col gap-4 flex-1 relative">
-                        {/* Scanline Laser */}
                         <motion.div 
                             animate={{ top: ["-20%", "120%"] }}
                             transition={{ duration: 3, repeat: Infinity, ease: "linear", delay: 1 }}
@@ -161,14 +133,12 @@ const HuupIsometricEcosystem = () => {
                             </div>
                         </div>
                         <div className="grid grid-cols-3 gap-2 mt-auto h-20">
-                            {[1,2,3].map(i => (
-                                <div key={i} className="bg-white/5 rounded border border-white/5" />
-                            ))}
+                            {[1,2,3].map(i => <div key={i} className="bg-white/5 rounded border border-white/5" />)}
                         </div>
                     </div>
                 </div>
 
-                {/* NIVEL 2: CÓDIGO FLOTANTE */}
+                {/* CÓDIGO FLOTANTE */}
                 <motion.div 
                     variants={floatAnimation(0)}
                     initial="initial"
@@ -184,12 +154,11 @@ const HuupIsometricEcosystem = () => {
                         <div className="h-1 w-3/4 bg-green-500/50 rounded" />
                         <div className="h-1 w-1/2 bg-purple-500/50 rounded pl-2" />
                         <div className="h-1 w-2/3 bg-blue-500/50 rounded pl-2" />
-                        <div className="h-1 w-1/4 bg-yellow-500/50 rounded" />
                     </div>
                     <div className="mt-auto text-[8px] font-mono text-green-400 animate-pulse">&gt; Compiled successfully</div>
                 </motion.div>
 
-                {/* NIVEL 3: MÓVIL */}
+                {/* MÓVIL */}
                 <motion.div 
                     variants={floatAnimation(1.5)}
                     initial="initial"
@@ -200,12 +169,11 @@ const HuupIsometricEcosystem = () => {
                     <div className="w-8 h-1 bg-white/20 rounded-full mx-auto mb-2 mt-1" />
                     <div className="flex-1 bg-brand-primary/10 rounded border border-brand-primary/20 flex flex-col items-center justify-center gap-2">
                         <Smartphone size={16} className="text-brand-primary" />
-                        <div className="h-1 w-8 bg-brand-primary/50 rounded" />
                     </div>
                     <div className="h-6 w-full bg-brand-primary mt-1 rounded-b-[0.8rem]" />
                 </motion.div>
 
-                {/* NIVEL 4: BADGE VELOCIDAD */}
+                {/* BADGE */}
                 <motion.div 
                     animate={{ z: [120, 140, 120], scale: [1, 1.05, 1] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -214,14 +182,6 @@ const HuupIsometricEcosystem = () => {
                 >
                     <Zap size={10} fill="currentColor" /> 100% Speed
                 </motion.div>
-
-                {/* LINEAS CONECTORAS */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" style={{ transform: "translateZ(40px)" }}>
-                    <line x1="100%" y1="20%" x2="80%" y2="50%" stroke="#f97316" strokeWidth="1" strokeDasharray="4 4" opacity="0.4" />
-                    <line x1="0%" y1="80%" x2="30%" y2="50%" stroke="#f97316" strokeWidth="1" strokeDasharray="4 4" opacity="0.4" />
-                    <motion.circle r="2" fill="#f97316" animate={{ cx: ["100%", "80%"], cy: ["20%", "50%"] }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} />
-                </svg>
-
             </motion.div>
         </div>
     );
@@ -232,26 +192,27 @@ export default function Hero() {
   const yBg = useTransform(scrollY, [0, 500], [0, 200]);
 
   return (
-    <section className="relative min-h-screen flex items-center bg-[#050505] overflow-hidden pt-20">
+    <section className="relative min-h-screen flex items-center bg-[#050505] overflow-hidden pt-20 md:pt-0">
       
-      {/* 0. MATRIX CODE RAIN (FONDO BASE) */}
+      {/* 0. MATRIX RAIN: Solo visible en desktop (hidden md:block) */}
       <div className="absolute inset-0 z-0">
           <MatrixRain />
       </div>
 
-      {/* 1. FONDO GRID (PERSPECTIVA SOBRE LA LLUVIA) */}
+      {/* 1. FONDO GRID: Plano en móvil, 3D en Desktop */}
       <motion.div style={{ y: yBg }} className="absolute inset-0 z-0 pointer-events-none perspective-1000">
-         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:60px_60px] [transform:rotateX(60deg)scale(2)] origin-top opacity-30"></div>
+         {/* En móvil quitamos el rotateX y scale para ahorrar GPU */}
+         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:40px_40px] md:bg-[size:60px_60px] md:[transform:rotateX(60deg)scale(2)] origin-top opacity-20 md:opacity-30"></div>
          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent"></div>
       </motion.div>
 
-      {/* Spotlights */}
-      <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-brand-primary/5 blur-[150px] rounded-full pointer-events-none" />
+      {/* Spotlights: Simplificados en móvil */}
+      <div className="absolute top-[-10%] left-[-10%] w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-brand-primary/10 blur-[80px] md:blur-[150px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           
           {/* === COLUMNA IZQUIERDA: Texto === */}
-          <div className="text-left relative z-20">
+          <div className="text-left relative z-20 pt-10 md:pt-0">
             
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
@@ -332,7 +293,7 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* === COLUMNA DERECHA: ECOSYSTEM UI === */}
+          {/* === COLUMNA DERECHA: OCULTA EN MÓVIL PARA RENDIMIENTO === */}
           <div className="relative w-full h-full hidden lg:flex items-center justify-center pointer-events-none">
              <HuupIsometricEcosystem />
           </div>

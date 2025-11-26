@@ -1,31 +1,28 @@
-// src/middleware.js
+// src/proxy.js (CORREGIDO PARA EVITAR REDIRECCIONES INFINITAS)
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
 // 1. CONFIGURACIÓN DEL MIDDLEWARE DE AUTENTICACIÓN
 export default withAuth(
-    // Función principal (se ejecuta solo si el token de sesión es válido)
+    // Función principal (Autorización de Rol: se ejecuta si el token es válido)
     function middleware(req) {
         const token = req.nextauth.token;
         const pathname = req.nextUrl.pathname;
 
-        // Ejemplo de Autorización: Proteger la ruta de administración (/admin)
-        // CRÍTICO: Si el usuario intenta acceder a /admin y NO es un admin, lo redirigimos.
+        // EJEMPLO DE AUTORIZACIÓN: Proteger la ruta de administración (/admin)
         if (pathname.startsWith('/admin') && token?.role !== 'admin') {
             return NextResponse.redirect(new URL('/', req.url));
         }
 
-        // Si el usuario está autenticado y no es un admin, puede continuar (ej. en el foro)
         return NextResponse.next();
     },
     {
         // 2. CONFIGURACIÓN DE PÁGINAS PÚBLICAS Y PROTEGIDAS
         callbacks: {
-            // Esta función se ejecuta antes de 'middleware' si no hay token.
-            // Si devuelve 'true', permite el acceso sin token (Rutas Públicas).
+            // Función CRÍTICA: Determina si el acceso está autorizado (antes de la redirección)
             async authorized({ token, req }) {
                 const pathname = req.nextUrl.pathname;
-
+                
                 // Definimos las rutas que son públicas (no requieren sesión)
                 const isPublicPath = 
                     pathname === '/' || 
@@ -33,17 +30,16 @@ export default withAuth(
                     pathname.startsWith('/register') ||
                     pathname.startsWith('/blog');
 
-                // Si la ruta es pública, permitimos el acceso sin token.
+                // Permitir acceso a rutas públicas (el usuario puede estar logueado o no).
                 if (isPublicPath) {
                     return true;
                 }
 
-                // De lo contrario, solo permitimos si hay un token válido.
-                // Esto protege TODAS las demás rutas (incluyendo /foro) por defecto.
-                return !!token;
+                // Para rutas protegidas (/foro, /admin, etc.), solo permitimos si hay un token.
+                return !!token; 
             },
         },
-        // Página de inicio de sesión a la que se redirigirá si no hay sesión
+        // NextAuth usará esta página para redirigir si 'authorized' devuelve false.
         pages: {
             signIn: '/login',
         },
@@ -52,7 +48,7 @@ export default withAuth(
 
 // 3. CONFIGURACIÓN DEL MATCHING DE RUTAS
 export const config = {
-    // Definimos qué rutas deben pasar por el Middleware
-    // CRÍTICO: El Middleware debe correr en el Foro y Admin
-    matcher: ['/foro/:path*', '/admin/:path*'],
+    // Aplicar el Middleware a todas las rutas que PUEDEN ser protegidas (todas excepto _next/static, etc.)
+    // Incluye /foro y /admin.
+    matcher: ['/foro/:path*', '/admin/:path*', '/'], // Puedes añadir '/' aquí para proteger el root también si fuera necesario
 };

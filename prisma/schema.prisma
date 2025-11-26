@@ -1,0 +1,77 @@
+// prisma/schema.prisma
+// Base de datos PostgreSQL para NextAuth (Auth.js) y la Plataforma Huup.
+
+generator client {
+  provider = "prisma-client-js"
+  // 👇 ESTA LÍNEA SOLUCIONA EL ERROR "Cannot find module ...wasm"
+  engineType = "library"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 1. MODELO PRINCIPAL DE USUARIO (Huup Community Schema)
+model User {
+  // CAMPOS BASE REQUERIDOS POR NEXTAUTH
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  name          String?
+  image         String?
+  
+  // Campo para el login por Credenciales (si no usas solo OAuth)
+  hashedPassword String? 
+
+  // CAMPOS ESPECÍFICOS DE LA COMUNIDAD HUUP
+  forum_username String? @unique // Nombre de usuario visible en el foro (Ej. SrDevHuup)
+  role           String  @default("user") // 'user', 'admin', 'mentor'. Usaremos 'user' por defecto.
+  huup_level     Int     @default(1) // Nivel de membresía/progreso en cursos.
+
+  // Relaciones y Timestamps
+  accounts      Account[]
+  sessions      Session[]
+  created_at    DateTime @default(now())
+
+  // CRÍTICO: Índice para búsqueda rápida por email
+  @@index([email]) 
+}
+
+// 2. MODELO DE CUENTA (Requerido por NextAuth/OAuth)
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+// 3. MODELO DE SESIÓN (Requerido por NextAuth)
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// 4. MODELO DE VERIFICACIÓN DE TOKEN (Requerido para Email/Magic Link)
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

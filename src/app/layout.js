@@ -1,4 +1,4 @@
-// src/app/layout.js (INTEGRACIÓN FINAL DEL SESSION PROVIDER)
+// src/app/layout.js (SOLUCIÓN FINAL DE RUTA Y WHITESPACE)
 
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
@@ -7,8 +7,8 @@ import NexusChat from "@/components/nexus/NexusChat";
 import Cursor from "@/components/layout/Cursor";
 import Script from "next/script";
 
-// CRÍTICO: Importar el nuevo Provider
-import NextAuthSessionProvider from "@/components/auth/NextAuthSessionProvider"; 
+// CRÍTICO: Importación corregida a ruta relativa '../' (Sube un nivel: src/app -> src/)
+import NextAuthSessionProvider from "../components/auth/NextAuthSessionProvider"; 
 
 // === ID REAL DE GTM ===
 const GTM_ID = "GTM-P4V2MZFX"; 
@@ -36,6 +36,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="es" className="scroll-smooth">
+      {/* Corregimos el error de hidratación moviendo el script de GTM dentro de head si es posible, 
+         y eliminando el espacio entre <html> y <body> */}
       
       {/* 🟢 GTM PARTE 1: INYECCIÓN EN HEAD (Script principal) */}
       <Script id="gtm-script-head" strategy="afterInteractive">
@@ -47,7 +49,6 @@ export default function RootLayout({ children }) {
           })(window,document,'script','dataLayer','${GTM_ID}');
         `}
       </Script>
-
       <body 
         className={`${inter.variable} ${techMono.variable} font-sans bg-[#050505] text-white antialiased selection:bg-brand-primary/30 selection:text-white relative`}
       >

@@ -7,12 +7,28 @@
   --foreground: #EDEDED;
 }
 
+/* 1. SCROLL SUAVE GLOBAL */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif; 
+  font-family: Arial, Helvetica, sans-serif;
+  /* Anti-aliasing para fuentes más nítidas en pantallas oscuras */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* 2. COLOR DE SELECCIÓN (Toque Premium) */
+/* Hace que cuando resaltes texto, sea naranja suave en lugar del azul default */
+::selection {
+  background-color: rgba(234, 88, 12, 0.3); /* Orange-600 con opacidad */
+  color: #fff;
+}
+
+/* 3. SCROLLBAR PERSONALIZADO */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -20,9 +36,15 @@ body {
   background: #050505;
 }
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: #262626; /* Un gris un poco más sutil que #333 */
   border-radius: 4px;
+  border: 1px solid #050505; /* Borde para separarlo del track */
 }
+::-webkit-scrollbar-thumb:hover {
+  background: #404040;
+}
+
+/* 4. EFECTO DE RUIDO (NOISE) */
 .bg-noise {
   position: fixed;
   top: 0;
@@ -31,7 +53,7 @@ body {
   height: 100vh;
   pointer-events: none;
   z-index: 50;
-  opacity: 0.05;
+  opacity: 0.04; /* Ajustado ligeramente para no interferir con el texto */
   background-image: url("https://grainy-gradients.vercel.app/noise.svg");
   filter: contrast(170%) brightness(100%);
 }

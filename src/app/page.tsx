@@ -9,22 +9,44 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="bg-background relative min-h-screen w-full">
+    <main className="bg-background relative min-h-screen w-full selection:bg-orange-500/30">
       <Navbar />
       
-      <Hero />
+      {/* 00. INICIO */}
+      <section id="inicio" className="w-full relative">
+        <Hero />
+      </section>
       
-      <TechStack />
+      {/* 01. STACK TECNOLÓGICO */}
+      <section id="stack" className="w-full relative z-10">
+        <TechStack />
+      </section>
       
-      <Services />
+      {/* 02. SERVICIOS */}
+      <section id="servicios" className="w-full relative z-10 scroll-mt-20">
+        <Services />
+      </section>
       
-      <TechFoundation />
+      {/* 03. FUNDAMENTOS / NOSOTROS */}
+      {/* Ideal para enlazar la sección "Nosotros" aquí */}
+      <section id="nosotros" className="w-full relative z-10">
+        <TechFoundation />
+      </section>
 
-      <Methodology />
+      {/* 04. METODOLOGÍA */}
+      <section id="metodologia" className="w-full relative z-10 scroll-mt-20">
+        <Methodology />
+      </section>
       
-      <Work />
+      {/* 05. PROYECTOS / WORK */}
+      <section id="proyectos" className="w-full relative z-10 scroll-mt-20">
+        <Work />
+      </section>
       
-      <Footer />
+      {/* 06. CONTACTO / FOOTER */}
+      <section id="contacto" className="w-full relative z-10">
+        <Footer />
+      </section>
       
     </main>
   );

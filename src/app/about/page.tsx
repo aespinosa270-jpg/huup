@@ -108,7 +108,7 @@ export default function AboutPage() {
               
               <div className="space-y-6 text-lg text-neutral-400">
                 <p>
-                  ¿Sabes por qué tu web anterior fallaba? Porque usaban plantillas multipropósito con 50 plugins activos. Porque no entendían el <em className="text-white not-italic">Critical Rendering Path</em>. Porque pensaban que instalar jQuery en 2025 era aceptable.
+                  ¿Sabes por qué tu web anterior fallaba? Porque usaban plantillas multipropósito con 50 plugins activos. Porque no entendían el <em className="text-white not-italic">Critical Rendering Path</em>. Porque pensaban que instalar jQuery en 2026 era aceptable.
                 </p>
                 <p className="border-l-4 border-orange-600 pl-6 text-white font-light italic">
                   "En Huup, escribimos código quirúrgico. Cada línea tiene un propósito. Si no aporta valor o rendimiento, se borra (Shift + Del)."

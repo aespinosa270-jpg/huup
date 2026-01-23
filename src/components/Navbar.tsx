@@ -60,7 +60,7 @@ export default function Navbar() {
             className="group relative z-50 flex items-baseline gap-1 leading-none" 
             onClick={() => setIsOpen(false)}
           >
-            <span className="text-4xl md:text-5xl font-black text-white tracking-tighter mix-blend-difference lowercase hover:text-neutral-300 transition-colors">
+            <span className="text-4xl md:text-7xl font-black text-white tracking-tighter mix-blend-difference lowercase hover:text-neutral-300 transition-colors">
               huup
             </span>
             <span className="w-3 h-3 bg-orange-600 rounded-sm mb-1 md:mb-2 group-hover:animate-pulse shadow-[0_0_15px_#ea580c] transition-all"></span>

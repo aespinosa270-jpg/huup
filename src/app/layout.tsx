@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css"; 
 import SmoothScrolling from "@/components/SmoothScrolling";
+import CookieConsent from "@/components/CookieConsent"; // <--- 1. IMPORTAR AQUÍ
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,13 +21,11 @@ export const metadata: Metadata = {
   keywords: ["Software a la medida", "Fullstack Development", "High Tech", "Next.js 16", "Agencia de Software"],
   authors: [{ name: "Huup Team" }],
   
-  // 1. Iconos (Favicon)
   icons: {
-    icon: "/icon.png", // Debes colocar tu logo de 32x32px en public/icon.png
-    apple: "/apple-icon.png", // Para dispositivos iOS
+    icon: "/icon.png", 
+    apple: "/apple-icon.png", 
   },
 
-  // 2. Open Graph (WhatsApp, Facebook, LinkedIn)
   openGraph: {
     title: "Huup | Ingeniería de Software de Alto Rendimiento",
     description: "Arquitectura digital y desarrollo fullstack para marcas que no se conforman.",
@@ -34,7 +33,7 @@ export const metadata: Metadata = {
     siteName: "Huup",
     images: [
       {
-        url: "/opengraph-image.png", // Imagen de 1200x630px en public/opengraph-image.png
+        url: "/opengraph-image.png", 
         width: 1200,
         height: 630,
         alt: "Huup Software Agency Terminal Interface",
@@ -44,7 +43,6 @@ export const metadata: Metadata = {
     type: "website",
   },
 
-  // 3. Twitter Card
   twitter: {
     card: "summary_large_image",
     title: "Huup | High-End Software Agency",
@@ -64,9 +62,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
         <div className="bg-noise" />
+        
         <SmoothScrolling>
           {children}
         </SmoothScrolling>
+
+        {/* 2. COMPONENTE INTEGRADO AQUÍ (Fuera del scroll, dentro del body) */}
+        <CookieConsent />
+        
       </body>
     </html>
   );

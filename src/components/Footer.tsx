@@ -6,6 +6,14 @@ import { ArrowUpRight, Github, Twitter, Linkedin, Terminal, Mail, MapPin } from 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
+  // Mapeo manual para corregir los errores 404
+  const navLinks = [
+    { label: 'Proyectos', href: '/work' },       // Carpeta real: /app/work
+    { label: 'Servicios', href: '/#services' },  // Sección en Home (requiere id="services")
+    { label: 'Método', href: '/#process' },      // Sección en Home (requiere id="process")
+    { label: 'Nosotros', href: '/about' }        // Carpeta real: /app/about
+  ];
+
   return (
     <footer className="relative w-full bg-[#020202] pt-32 pb-12 px-6 md:px-12 border-t border-white/5 overflow-hidden font-sans">
       
@@ -16,7 +24,7 @@ export default function Footer() {
 
       <div className="relative z-10 mx-auto max-w-7xl flex flex-col justify-between min-h-[60vh]">
         
-        {/* --- SECCIÓN SUPERIOR: MEGA CTA (En Español) --- */}
+        {/* --- SECCIÓN SUPERIOR: MEGA CTA --- */}
         <div className="mb-24 md:mb-32">
           <div className="flex flex-col items-start gap-8">
             <motion.div 
@@ -56,29 +64,24 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* --- SECCIÓN MEDIA: GRID DE NAVEGACIÓN TÉCNICA --- */}
+        {/* --- SECCIÓN MEDIA: GRID DE NAVEGACIÓN --- */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-12 border-t border-white/10 pt-16 mb-20">
            
-           {/* Columna 1: Brand */}
+           {/* Branding */}
            <div className="col-span-2 md:col-span-1 space-y-4">
               <Link href="/" className="text-3xl font-black tracking-tighter text-white">
                 huup<span className="text-primary">.</span>
               </Link>
               <p className="text-xs text-white/40 leading-relaxed max-w-[200px]">
-                 Laboratorio de ingeniería digital. Construimos ecosistemas de alto rendimiento para líderes de mercado.
+                 Laboratorio de ingeniería digital. Construimos ecosistemas de alto rendimiento.
               </p>
            </div>
 
-           {/* Columna 2: Sitemap */}
+           {/* Índice (Links Corregidos) */}
            <div className="space-y-4">
               <h4 className="font-mono text-xs text-white/30 uppercase tracking-widest">Índice</h4>
               <ul className="space-y-2 text-sm">
-                 {[
-                   { label: 'Proyectos', href: '/work' },
-                   { label: 'Servicios', href: '/#services' },
-                   { label: 'Método', href: '/#process' },
-                   { label: 'Nosotros', href: '/about' }
-                 ].map((item) => (
+                 {navLinks.map((item) => (
                     <li key={item.label}>
                        <Link href={item.href} className="text-white/60 hover:text-primary transition-colors flex items-center gap-2 group">
                           <span className="w-0 overflow-hidden group-hover:w-2 transition-all duration-300 text-primary">/</span>
@@ -89,7 +92,7 @@ export default function Footer() {
               </ul>
            </div>
 
-           {/* Columna 3: Social */}
+           {/* Redes Sociales */}
            <div className="space-y-4">
               <h4 className="font-mono text-xs text-white/30 uppercase tracking-widest">Conexión</h4>
               <ul className="space-y-2 text-sm">
@@ -99,7 +102,7 @@ export default function Footer() {
               </ul>
            </div>
 
-            {/* Columna 4: HQ & Status */}
+           {/* HQ Info */}
            <div className="space-y-4">
               <h4 className="font-mono text-xs text-white/30 uppercase tracking-widest">HQ</h4>
               <div className="text-sm text-white/60 space-y-1">
@@ -113,10 +116,9 @@ export default function Footer() {
                  </div>
               </div>
            </div>
-
         </div>
 
-        {/* --- SECCIÓN INFERIOR: COPYRIGHT --- */}
+        {/* --- SECCIÓN INFERIOR: LEGAL --- */}
         <div className="flex flex-col md:flex-row items-center justify-between border-t border-white/5 pt-8 gap-4">
            
            <div className="flex items-center gap-2 text-[10px] font-mono text-white/20 uppercase">
@@ -126,8 +128,9 @@ export default function Footer() {
            </div>
 
            <div className="flex items-center gap-6">
-              <Link href="/privacy" className="text-[10px] font-mono text-white/20 hover:text-white transition-colors uppercase">Privacidad</Link>
-              <Link href="/terms" className="text-[10px] font-mono text-white/20 hover:text-white transition-colors uppercase">Términos</Link>
+              <Link href="/legal/privacy" className="text-[10px] font-mono text-white/20 hover:text-white transition-colors uppercase">Privacidad</Link>
+              <Link href="/legal/terms" className="text-[10px] font-mono text-white/20 hover:text-white transition-colors uppercase">Términos</Link>
+              <Link href="/legal/cookies" className="text-[10px] font-mono text-white/20 hover:text-white transition-colors uppercase">Cookies</Link>
            </div>
            
            <div className="hidden md:flex items-center gap-2 text-[10px] font-mono text-white/20">

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css"; 
+import "./globals.css";
 import SmoothScrolling from "@/components/SmoothScrolling";
-import CookieConsent from "@/components/CookieConsent"; // <--- 1. IMPORTAR AQUÍ
+import CookieConsent from "@/components/CookieConsent";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp"; // <--- Importamos el botón
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +15,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Metadata optimizada para el SEO y Branding de Huup
 export const metadata: Metadata = {
   title: "Huup | High-End Software Agency",
   description: "CEO de Huup.com.mx: Desarrollo fullstack con implementación de herramientas high tech y software a la medida.",
@@ -63,12 +63,14 @@ export default function RootLayout({
       >
         <div className="bg-noise" />
         
+        {/* Contenido con Scroll Suave */}
         <SmoothScrolling>
           {children}
         </SmoothScrolling>
 
-        {/* 2. COMPONENTE INTEGRADO AQUÍ (Fuera del scroll, dentro del body) */}
+        {/* Componentes Flotantes (Fuera del flujo del scroll) */}
         <CookieConsent />
+        <FloatingWhatsApp />
         
       </body>
     </html>

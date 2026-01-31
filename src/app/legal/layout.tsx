@@ -20,7 +20,6 @@ export default function LegalLayout({
         </div>
       </main>
 
-      {/* 3. Footer Global */}
       <Footer />
     </div>
   );

@@ -1,7 +1,13 @@
 "use client";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Github, Twitter, Linkedin, Terminal, Mail, MapPin } from "lucide-react";
+import { ArrowUpRight, Terminal, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+
+const WHATSAPP = "527299935444";
+const EMAIL = "hola@huup.com.mx"; // mismo dominio que el sitio
+const waUrl = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
+  "Hola Huup, quiero cotizar un proyecto."
+)}`;
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -16,18 +22,18 @@ export default function Footer() {
 
   return (
     <footer className="relative w-full bg-[#020202] pt-32 pb-12 px-6 md:px-12 border-t border-white/5 overflow-hidden font-sans">
-      
+
       {/* TEXTURAS DE FONDO */}
       <div className="absolute inset-0 z-0 opacity-[0.03]" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="relative z-10 mx-auto max-w-7xl flex flex-col justify-between min-h-[60vh]">
-        
+
         {/* --- SECCIÓN SUPERIOR: MEGA CTA --- */}
         <div className="mb-24 md:mb-32">
           <div className="flex flex-col items-start gap-8">
-            <motion.div 
+            <motion.div
                initial={{ opacity: 0, y: 20 }}
                whileInView={{ opacity: 1, y: 0 }}
                viewport={{ once: true }}
@@ -48,17 +54,19 @@ export default function Footer() {
             </h2>
 
             <div className="flex flex-col md:flex-row gap-8 items-start md:items-center mt-8 w-full">
-               <Link
-                 href="/contact"
+               <a
+                 href={waUrl}
+                 target="_blank"
+                 rel="noopener noreferrer"
                  className="group relative flex h-16 w-full md:w-auto items-center justify-center gap-4 overflow-hidden rounded bg-white px-10 text-lg font-bold uppercase tracking-wider text-black transition-all hover:bg-primary"
                >
                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent translate-x-[-100%] group-hover:animate-shine" />
-                 <span>Iniciar Proyecto</span>
+                 <span>Cotizar por WhatsApp</span>
                  <ArrowUpRight size={20} className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
-               </Link>
-               
-               <a href="mailto:hola@huup.mx" className="text-white/40 hover:text-white transition-colors font-mono text-sm flex items-center gap-2 border-b border-transparent hover:border-white/40 pb-1">
-                  <Mail size={14} /> hola@huup.mx
+               </a>
+
+               <a href={`mailto:${EMAIL}`} className="text-white/40 hover:text-white transition-colors font-mono text-sm flex items-center gap-2 border-b border-transparent hover:border-white/40 pb-1">
+                  <Mail size={14} /> {EMAIL}
                </a>
             </div>
           </div>
@@ -66,14 +74,14 @@ export default function Footer() {
 
         {/* --- SECCIÓN MEDIA: GRID DE NAVEGACIÓN --- */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-12 border-t border-white/10 pt-16 mb-20">
-           
+
            {/* Branding */}
            <div className="col-span-2 md:col-span-1 space-y-4">
               <Link href="/" className="text-3xl font-black tracking-tighter text-white">
                 huup<span className="text-primary">.</span>
               </Link>
               <p className="text-xs text-white/40 leading-relaxed max-w-[200px]">
-                 Laboratorio de ingeniería digital. Construimos ecosistemas de alto rendimiento.
+                 Laboratorio de ingeniería digital. Software 100% propiedad del cliente, cero licencias externas.
               </p>
            </div>
 
@@ -92,13 +100,25 @@ export default function Footer() {
               </ul>
            </div>
 
-           {/* Redes Sociales */}
+           {/* Contacto directo (sustituye links sociales muertos) */}
            <div className="space-y-4">
-              <h4 className="font-mono text-xs text-white/30 uppercase tracking-widest">Conexión</h4>
+              <h4 className="font-mono text-xs text-white/30 uppercase tracking-widest">Contacto directo</h4>
               <ul className="space-y-2 text-sm">
-                 <li><a href="#" className="text-white/60 hover:text-white transition-colors flex items-center gap-2"><Linkedin size={14} /> LinkedIn</a></li>
-                 <li><a href="#" className="text-white/60 hover:text-white transition-colors flex items-center gap-2"><Twitter size={14} /> Twitter (X)</a></li>
-                 <li><a href="#" className="text-white/60 hover:text-white transition-colors flex items-center gap-2"><Github size={14} /> GitHub</a></li>
+                 <li>
+                    <a href={waUrl} target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-white transition-colors flex items-center gap-2">
+                       <MessageCircle size={14} /> WhatsApp
+                    </a>
+                 </li>
+                 <li>
+                    <a href={`mailto:${EMAIL}`} className="text-white/60 hover:text-white transition-colors flex items-center gap-2">
+                       <Mail size={14} /> Correo
+                    </a>
+                 </li>
+                 <li>
+                    <a href={`tel:+${WHATSAPP}`} className="text-white/60 hover:text-white transition-colors flex items-center gap-2">
+                       <Phone size={14} /> Llamada
+                    </a>
+                 </li>
               </ul>
            </div>
 
@@ -120,9 +140,9 @@ export default function Footer() {
 
         {/* --- SECCIÓN INFERIOR: LEGAL --- */}
         <div className="flex flex-col md:flex-row items-center justify-between border-t border-white/5 pt-8 gap-4">
-           
+
            <div className="flex items-center gap-2 text-[10px] font-mono text-white/20 uppercase">
-              <span>© {currentYear} Huup Inc.</span>
+              <span>© {currentYear} Huup.</span>
               <span>—</span>
               <span>Todos los derechos reservados.</span>
            </div>
@@ -132,10 +152,10 @@ export default function Footer() {
               <Link href="/legal/terms" className="text-[10px] font-mono text-white/20 hover:text-white transition-colors uppercase">Términos</Link>
               <Link href="/legal/cookies" className="text-[10px] font-mono text-white/20 hover:text-white transition-colors uppercase">Cookies</Link>
            </div>
-           
+
            <div className="hidden md:flex items-center gap-2 text-[10px] font-mono text-white/20">
               <Terminal size={10} />
-              <span>v16.0.4-rc (Latam)</span>
+              <span>huup.com.mx // CDMX</span>
            </div>
 
         </div>

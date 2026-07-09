@@ -1,10 +1,9 @@
 "use client";
 import { useState } from "react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
-import { 
-  Terminal, ShoppingBag, Briefcase, Boxes, 
-  LayoutDashboard, TrendingUp, Rocket, CheckCircle2, 
-  BarChart3, ArrowRight, Cpu, ShieldCheck
+import {
+  ShoppingBag, TrendingUp, Rocket,
+  ArrowRight, ShieldCheck
 } from "lucide-react";
 
 // --- TUS 6 SERVICIOS (DATA) ---
@@ -12,10 +11,10 @@ const services = [
   {
     id: "ecommerce",
     number: "01",
-    title: "Ecommerce High-End",
-    subtitle: "Headless Architecture",
-    description: "Comercio unificado sin límites. Arquitectura composable con Next.js que supera a Shopify Plus en velocidad y personalización.",
-    tags: ["Headless", "Stripe", "MedusaJS"],
+    title: "Ecommerce Propio",
+    subtitle: "Cero rentas, cero comisiones",
+    description: "Tu tienda con catálogo, carrito y checkout 100% propios. Sin licencias mensuales ni porcentaje por venta: lo que una plataforma rentada te cobraría cada mes, aquí es margen tuyo.",
+    tags: ["Headless", "Next.js", "Checkout propio"],
     status: "ONLINE",
   },
   {
@@ -23,7 +22,7 @@ const services = [
     number: "02",
     title: "ERPs & Sistemas",
     subtitle: "Business OS",
-    description: "El sistema nervioso de tu empresa. Dashboards operativos y automatización de flujos de trabajo a medida.",
+    description: "El sistema nervioso de tu empresa. Dashboards operativos y automatización de flujos de trabajo a medida, sobre tu propia base de datos.",
     tags: ["Dashboard", "CRM", "Auto"],
     status: "ACTIVE",
   },
@@ -70,14 +69,14 @@ export default function Services() {
 
   return (
     <section id="services" className="relative min-h-screen bg-[#020202] py-32 px-6 md:px-12 selection:bg-primary/30 overflow-hidden">
-      
+
       {/* --- AMBIENTE --- */}
       <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.03]" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} />
       <div className="absolute left-0 top-1/3 h-[800px] w-[800px] bg-blue-500/5 blur-[150px] rounded-full pointer-events-none mix-blend-screen" />
       <div className="absolute right-0 bottom-1/3 h-[600px] w-[600px] bg-primary/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen" />
 
       <div className="relative z-10 mx-auto max-w-7xl">
-        
+
         {/* HEADER */}
         <div className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
@@ -102,7 +101,7 @@ export default function Services() {
 
         {/* --- GRID MAESTRO --- */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-          
+
           {/* COLUMNA IZQUIERDA: TARJETAS DE MANDO */}
           <div className="lg:col-span-5 flex flex-col gap-3 relative z-10">
             <LayoutGroup>
@@ -118,14 +117,14 @@ export default function Services() {
                     whileInView={{ opacity: 1, x: 0 }}
                     className={`
                       group relative w-full overflow-hidden rounded-xl border text-left transition-all duration-300
-                      ${isActive 
-                        ? "border-primary/50 bg-[#0A0A0A] shadow-[0_0_30px_-10px_rgba(255,77,0,0.15)]" 
+                      ${isActive
+                        ? "border-primary/50 bg-[#0A0A0A] shadow-[0_0_30px_-10px_rgba(255,77,0,0.15)]"
                         : "border-white/5 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]"}
                     `}
                   >
                     {/* Glow de fondo activo */}
                     {isActive && (
-                      <motion.div 
+                      <motion.div
                         layoutId="activeGlow"
                         className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50"
                         transition={{ duration: 0.3 }}
@@ -150,7 +149,7 @@ export default function Services() {
                            </h3>
                            {isActive && <ArrowRight size={14} className="text-primary -rotate-45" />}
                         </div>
-                        
+
                         <div className={`text-[10px] font-mono uppercase tracking-widest mb-3 ${isActive ? "text-primary/80" : "text-white/30"}`}>
                           // {service.subtitle}
                         </div>
@@ -185,7 +184,7 @@ export default function Services() {
           <div className="lg:col-span-7 relative h-[500px] lg:h-auto min-h-[500px]">
              <div className="sticky top-24 w-full h-full">
                 <div className="relative h-full w-full rounded-2xl border border-white/10 bg-[#050505] overflow-hidden shadow-2xl flex flex-col">
-                   
+
                    {/* HUD Header */}
                    <div className="flex items-center justify-between border-b border-white/5 bg-white/[0.01] px-5 py-4">
                       <div className="flex items-center gap-3">
@@ -207,14 +206,14 @@ export default function Services() {
                    {/* Main Viewport */}
                    <div className="relative flex-1 bg-grid-white/[0.02] flex items-center justify-center p-8 overflow-hidden">
                       {/* Scanline FX */}
-                      <motion.div 
+                      <motion.div
                         key={activeId}
                         initial={{ top: "-100%" }}
                         animate={{ top: "200%" }}
                         transition={{ duration: 1.5, ease: "linear" }}
                         className="absolute left-0 right-0 h-32 bg-gradient-to-b from-transparent via-primary/10 to-transparent pointer-events-none z-0"
                       />
-                      
+
                       {/* Componente Visual Activo */}
                       <AnimatePresence mode="wait">
                          <motion.div
@@ -261,7 +260,7 @@ function EcommerceVisual() {
              <div className="h-8 w-8 rounded bg-white/10 flex items-center justify-center"><ShoppingBag size={14} /></div>
              <div>
                 <div className="text-xs text-white font-bold">Storefront</div>
-                <div className="text-[10px] text-white/40">Headless API</div>
+                <div className="text-[10px] text-white/40">Plataforma propia</div>
              </div>
           </div>
           <div className="px-2 py-1 rounded bg-green-500/10 text-green-500 text-[10px] font-bold border border-green-500/20">98/100 SPEED</div>
@@ -285,7 +284,7 @@ function EcommerceVisual() {
           </div>
        </div>
        <div className="mt-4 pt-4 border-t border-white/5 flex justify-between items-center">
-          <span className="text-xs text-white/50">Powered by Stripe</span>
+          <span className="text-xs text-white/50">Comisión por venta: $0</span>
           <div className="flex gap-1">
              <div className="h-1.5 w-1.5 rounded-full bg-primary" />
              <div className="h-1.5 w-1.5 rounded-full bg-primary" />
@@ -335,11 +334,11 @@ function VentureVisual() {
             </div>
             <h4 className="text-lg font-bold text-white mb-1">Sprint de Lanzamiento</h4>
             <p className="text-xs text-white/50 mb-6">Timeline estimado: 4 Semanas</p>
-            
+
             <div className="space-y-3 relative">
                <div className="absolute left-3 top-2 bottom-2 w-px bg-white/10" />
                <div className="flex items-center gap-3 relative z-10">
-                  <div className="h-2 w-2 rounded-full bg-white border border-black" /> {/* Cambiado a h-2 w-2 */}
+                  <div className="h-2 w-2 rounded-full bg-white border border-black" />
                   <div className="flex-1 h-8 rounded bg-white/5 flex items-center px-3 text-[10px] text-white/60">Semana 1: Prototipo</div>
                </div>
                <div className="flex items-center gap-3 relative z-10">
@@ -406,7 +405,7 @@ function GrowthVisual() {
          </div>
          <div className="flex items-end gap-1 h-32">
             {[20, 35, 30, 50, 45, 60, 55, 75, 70, 90, 85, 100].map((h, i) => (
-               <motion.div 
+               <motion.div
                  key={i}
                  initial={{ height: 0 }}
                  animate={{ height: `${h}%` }}
@@ -431,9 +430,9 @@ function WebVisual() {
             <div className="relative h-24 w-24 flex items-center justify-center mb-4">
                <svg className="absolute inset-0 h-full w-full -rotate-90" viewBox="0 0 36 36">
                   <path className="text-white/5" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3" />
-                  <motion.path 
+                  <motion.path
                      initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, ease: "circOut" }}
-                     className="text-green-500" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="100, 100" 
+                     className="text-green-500" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="100, 100"
                   />
                </svg>
                <div className="text-3xl font-bold text-white">100</div>
